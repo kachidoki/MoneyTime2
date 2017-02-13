@@ -12,18 +12,18 @@ import rx.Observable;
 
 public interface TasksDataSource {
 
-    Observable<List<Task>> getTasks();
+    Observable<List<Task>> getWeekTasks(String year,String weekOfYear);
 
-    Observable<Task> getTask();
+    Observable<List<Task>> getDayTask(String year,String month,String day);
 
-    void saveTask(@NonNull Task task);
+    void saveTask(String title, float startTime, float endTime, int year, int day, int month, int weekDay, int weekOfYear, int color, String description, boolean complete);
 
-    void doneTask(@NonNull Task task);
+    void doneTask(String year,String day,String month,String startTime, String endTime);
 
     void sync(boolean delete,boolean download);
 
     void deleteAllTasks();
 
-    void deleteTask(@NonNull Task task);
+    void deleteTask(String year,String day,String month,String startTime, String endTime);
 
 }
