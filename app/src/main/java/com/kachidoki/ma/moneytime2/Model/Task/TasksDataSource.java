@@ -1,6 +1,5 @@
 package com.kachidoki.ma.moneytime2.Model.Task;
 
-import android.support.annotation.NonNull;
 
 import java.util.List;
 
