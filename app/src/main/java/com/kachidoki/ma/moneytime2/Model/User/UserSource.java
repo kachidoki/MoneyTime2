@@ -1,6 +1,5 @@
 package com.kachidoki.ma.moneytime2.Model.User;
 
-import com.avos.avoscloud.AVUser;
 
 /**
  * Created by mayiwei on 2017/2/14.
@@ -21,5 +20,7 @@ public interface UserSource {
     void LogOut();
 
     boolean isLogin();
+
+    User mapperToUser(Object user);
 
 }

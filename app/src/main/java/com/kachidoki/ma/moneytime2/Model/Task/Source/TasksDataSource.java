@@ -1,5 +1,7 @@
-package com.kachidoki.ma.moneytime2.Model.Task;
+package com.kachidoki.ma.moneytime2.Model.Task.Source;
 
+
+import com.kachidoki.ma.moneytime2.Model.Task.Task;
 
 import java.util.List;
 
@@ -11,7 +13,7 @@ import rx.Observable;
 
 public interface TasksDataSource {
 
-    Observable<List<Task>> getWeekTasks(String year,String weekOfYear);
+    Observable<List<Task>> getWeekTasks(String year, String weekOfYear);
 
     Observable<List<Task>> getDayTask(String year,String month,String day);
 
@@ -24,5 +26,7 @@ public interface TasksDataSource {
     void deleteAllTasks();
 
     void deleteTask(String year,String day,String month,String startTime, String endTime);
+
+    void refresh();
 
 }

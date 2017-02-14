@@ -42,6 +42,7 @@ public class AVUserModel implements UserSource {
         });
     }
 
+
     @Override
     public Object getNowAccount() {
         return AVUser.getCurrentUser();
@@ -60,5 +61,15 @@ public class AVUserModel implements UserSource {
         }else {
             return false;
         }
+    }
+
+    @Override
+    public User mapperToUser(Object user) {
+        return new AutoValue_User(((AVUser)user).getObjectId(),
+                ((AVUser)user).getEmail(),
+                ((AVUser)user).getSessionToken(),
+                ((AVUser)user).getUsername(),
+                ((AVUser)user).getMobilePhoneNumber(),
+                ((AVUser)user).isMobilePhoneVerified());
     }
 }

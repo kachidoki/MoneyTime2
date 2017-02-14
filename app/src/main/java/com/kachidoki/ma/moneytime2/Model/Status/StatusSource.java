@@ -1,0 +1,47 @@
+package com.kachidoki.ma.moneytime2.Model.Status;
+
+import android.graphics.Bitmap;
+
+import com.avos.avoscloud.AVException;
+import com.kachidoki.ma.moneytime2.Model.User.User;
+
+import java.util.List;
+
+import rx.Observable;
+
+/**
+ * Created by mayiwei on 2017/2/14.
+ */
+
+public interface StatusSource {
+
+    public interface StatusCall{
+
+        void fail(Exception e);
+
+        void sucess();
+    }
+
+    void sendStatus(String text, Bitmap bitmap,String inboxType,StatusCall call);
+
+    void sendStatus(String text, String url,String inboxType,StatusCall call);
+
+    void sendPrivateStatus();
+
+    void getStatus();
+
+    Observable<List<Status>> getInbox(String inboxType);
+
+    void deleteStatus(Status status);
+
+    void likeStatus();
+
+    Observable<List<Status.Comment>> getStatusComment();
+
+    Observable<List<User>> getFollowers(String userObjId);
+
+    Observable<List<User>> getFollowings(String userObjId);
+
+    int getFollowStatus(Object user);
+
+}

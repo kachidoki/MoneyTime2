@@ -14,6 +14,7 @@ import com.google.auto.value.AutoValue;
 public abstract class Task implements Parcelable{
     public static final String TABLE = "task_item";
 
+    public static final String USER = "user";
     public static final String ID = "_id";
     public static final String TITLE = "title";
     public static final String STARTTIME = "startTime";

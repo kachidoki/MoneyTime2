@@ -1,8 +1,10 @@
-package com.kachidoki.ma.moneytime2.Model.Task;
+package com.kachidoki.ma.moneytime2.Model.Task.Source;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.kachidoki.ma.moneytime2.Model.Task.Task;
 
 /**
  * Created by mayiwei on 2017/2/12.

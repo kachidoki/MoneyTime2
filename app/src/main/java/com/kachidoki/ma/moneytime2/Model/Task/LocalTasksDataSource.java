@@ -4,6 +4,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 
+import com.kachidoki.ma.moneytime2.Model.Task.Source.DBOpenHelper;
+import com.kachidoki.ma.moneytime2.Model.Task.Source.Db;
+import com.kachidoki.ma.moneytime2.Model.Task.Source.TasksDataSource;
 import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;
 
@@ -115,5 +118,10 @@ public class LocalTasksDataSource implements TasksDataSource {
                         + " AND " + Task.DAY + " = ?"
                         + " AND " + Task.STARTTIME + " = ?"
                         + " AND " + Task.ENDTIME + " = ?",year,month,day,startTime,endTime);
+    }
+
+    @Override
+    public void refresh() {
+
     }
 }

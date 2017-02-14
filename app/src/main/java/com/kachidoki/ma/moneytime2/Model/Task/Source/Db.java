@@ -1,4 +1,4 @@
-package com.kachidoki.ma.moneytime2.Model.Task;
+package com.kachidoki.ma.moneytime2.Model.Task.Source;
 
 import android.database.Cursor;
 
