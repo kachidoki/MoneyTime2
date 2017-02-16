@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_marginLeft="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="60dp">
+    <LinearLayout
+        android:layout_marginLeft="108dp"
+        android:layout_gravity="center_vertical"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:background="@color/White">
+        <ImageView
+            android:id="@+id/holder_host_color_day"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/icon_round_black"
+            android:layout_gravity="center"
+            />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/holder_host_day"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="18dp"
+        android:layout_marginRight="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        android:text="2月31日"/>
+</LinearLayout>

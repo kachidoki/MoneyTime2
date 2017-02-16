@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/host_topimg"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:background="@drawable/host_background_1"/>
+
+    <TextView
+        android:id="@+id/host_monthAndYear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginRight="48dp"
+        android:text="11/2017"
+        android:textColor="@color/White"
+        android:textSize="18sp"
+        android:layout_marginTop="80dp"/>
+
+    <TextView
+        android:id="@+id/host_day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginRight="120dp"
+        android:text="24"
+        android:textColor="@color/White"
+        android:textSize="60sp"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/host_weekDay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="星期四"
+        android:textStyle="bold"
+        android:textColor="@color/White"
+        android:textSize="26dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginTop="48dp"/>
+</FrameLayout>
