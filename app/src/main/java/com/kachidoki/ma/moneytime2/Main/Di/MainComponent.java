@@ -1,9 +1,13 @@
 package com.kachidoki.ma.moneytime2.Main.Di;
 
 import com.kachidoki.ma.moneytime2.App.AppComponent;
+import com.kachidoki.ma.moneytime2.Main.Fragment.Chart.Di.ChartComponent;
 import com.kachidoki.ma.moneytime2.Main.Fragment.Chart.Di.ChartModule;
+import com.kachidoki.ma.moneytime2.Main.Fragment.Community.Di.CommunityComponent;
 import com.kachidoki.ma.moneytime2.Main.Fragment.Community.Di.CommunityModule;
+import com.kachidoki.ma.moneytime2.Main.Fragment.Host.Di.HostComponent;
 import com.kachidoki.ma.moneytime2.Main.Fragment.Host.Di.HostModule;
+import com.kachidoki.ma.moneytime2.Main.Fragment.Me.Di.MeComponent;
 import com.kachidoki.ma.moneytime2.Main.Fragment.Me.Di.MeModule;
 import com.kachidoki.ma.moneytime2.Main.MainActivity;
 
@@ -19,13 +23,13 @@ public interface MainComponent {
 
     void inject(MainActivity mainActivity);
 
-    HostModule plus(HostModule hostModule);
+    HostComponent plus(HostModule hostModule);
 
-    ChartModule plus(ChartModule chartModule);
+    ChartComponent plus(ChartModule chartModule);
 
-    CommunityModule plus(CommunityModule communityModule);
+    CommunityComponent plus(CommunityModule communityModule);
 
-    MeModule plus(MeModule meModule);
+    MeComponent plus(MeModule meModule);
 
 
 }

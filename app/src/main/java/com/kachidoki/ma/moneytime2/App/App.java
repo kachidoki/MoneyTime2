@@ -9,11 +9,21 @@ import com.avos.avoscloud.AVOSCloud;
  */
 
 public class App extends Application {
+    private AppComponent appComponent;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        AVOSCloud.initialize(this, "HVxKKusA1TbN8S8m0PBAWvsT-gzGzoHsz", "KXbdm3BfvasK0irHFCQQSfnD");
+
+        appComponent = DaggerAppComponent.builder().appModule(new AppModule(this)).build();
+
+        AVOSCloud.initialize(this,AppConstant.AVAPPID,AppConstant.AVAPPKEY);
         AVOSCloud.setDebugLogEnabled(true);
     }
+
+    public AppComponent getAppComponent(){
+        return appComponent;
+    }
+
+
 }

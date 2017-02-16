@@ -10,7 +10,6 @@ import dagger.Provides;
 /**
  * Created by mayiwei on 2017/2/16.
  */
-@ForFragment
 @Module
 public class HostModule {
     private HostContract.View view;

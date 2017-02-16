@@ -13,7 +13,6 @@ import dagger.Provides;
 /**
  * Created by mayiwei on 2017/2/16.
  */
-@ForActivity
 @Module
 public class MainModule {
     private MainContract.View view;

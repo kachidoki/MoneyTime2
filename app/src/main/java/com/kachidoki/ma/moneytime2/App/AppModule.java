@@ -9,7 +9,6 @@ import dagger.Module;
 /**
  * Created by mayiwei on 2017/2/16.
  */
-@Singleton
 @Module
 public class AppModule {
     private Context context;

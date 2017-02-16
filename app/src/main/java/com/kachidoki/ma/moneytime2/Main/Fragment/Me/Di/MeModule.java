@@ -10,7 +10,6 @@ import dagger.Provides;
 /**
  * Created by mayiwei on 2017/2/16.
  */
-@ForFragment
 @Module
 public class MeModule {
     private MeContract.View view;
@@ -21,7 +20,7 @@ public class MeModule {
 
     @ForFragment
     @Provides
-    MePresenter providesPresenter(){
+    MeContract.Presenter providesPresenter(){
         return new MePresenter(view);
     }
 
