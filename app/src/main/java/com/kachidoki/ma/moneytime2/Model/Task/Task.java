@@ -28,6 +28,14 @@ public abstract class Task implements Parcelable{
     public static final String COLOR = "color";
     public static final String COMPLETE = "complete";
 
+    public static final int RED = 1;
+    public static final int BLUE = 2;
+    public static final int GREEN = 3;
+    public static final int ORANGE = 4;
+    public static final int YELLOW = 5;
+    public static final int BLACK = 0;
+
+
     public abstract String title();
     public abstract float startTime();
     public abstract float endTime();

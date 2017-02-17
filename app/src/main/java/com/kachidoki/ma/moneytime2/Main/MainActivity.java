@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         ButterKnife.bind(this);
         mainComponent = DaggerMainComponent.builder()
                 .appComponent(((App)getApplication()).getAppComponent())
-                .mainModule(new MainModule(this))
+                .mainModule(new MainModule(this,this))
                 .build();
         mainComponent.inject(this);
         initViewPager();

@@ -13,9 +13,9 @@ public abstract class BaseLazyFragment extends Fragment {
     /**
      * 懒加载过
      */
-    private boolean isLazyLoaded;
+    private boolean isLazyLoaded = false;
 
-    private boolean isPrepared;
+    private boolean isPrepared = false;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

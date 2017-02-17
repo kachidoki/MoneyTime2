@@ -1,5 +1,7 @@
 package com.kachidoki.ma.moneytime2.Main.Di;
 
+import android.content.Context;
+
 import com.kachidoki.ma.moneytime2.Main.Fragment.Chart.ChartFragment;
 import com.kachidoki.ma.moneytime2.Main.Fragment.Community.CommunityFragment;
 import com.kachidoki.ma.moneytime2.Main.Fragment.Host.HostFragment;
@@ -16,9 +18,16 @@ import dagger.Provides;
 @Module
 public class MainModule {
     private MainContract.View view;
+    private Context mainContext;
 
-    public MainModule(MainContract.View view){
+    public MainModule(MainContract.View view,Context context){
         this.view = view;
+        this.mainContext = context;
+    }
+
+    @Provides
+    Context provideMainContxt(){
+        return mainContext;
     }
 
     @ForActivity
