@@ -7,10 +7,11 @@
 
 
     <color name="BlueTight">#81a9c1</color>
+    <color name="ABlueTight">#be81a9c1</color>
     <color name="BlueDark">#4e85a7</color>
 
 
-
+    <color name="Black">#000</color>
     <color name="White">#fff</color>
     <color name="Gray">#888888</color>
 

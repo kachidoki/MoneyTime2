@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/chart_toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/colorPrimary"
+    android:minHeight="?actionBarSize">
+    <TextView
+        android:id="@+id/chart_toolbar_day"
+        android:padding="2dp"
+        android:layout_width="48dp"
+        android:layout_height="36dp"
+        android:gravity="center"
+        android:background="@color/Red"
+        android:textColor="#fff"
+        android:text="今日"
+        android:layout_gravity="center" />
+    <TextView
+        android:id="@+id/chart_toolbar_week"
+        android:background="@color/Orange"
+        android:padding="2dp"
+        android:layout_width="48dp"
+        android:layout_height="36dp"
+        android:gravity="center"
+        android:textColor="#fff"
+        android:text="本周"
+        android:layout_gravity="center" />
+</android.support.v7.widget.Toolbar>

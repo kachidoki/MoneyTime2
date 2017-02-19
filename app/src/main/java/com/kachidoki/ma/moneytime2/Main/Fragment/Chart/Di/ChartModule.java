@@ -3,6 +3,8 @@ package com.kachidoki.ma.moneytime2.Main.Fragment.Chart.Di;
 import com.kachidoki.ma.moneytime2.Main.Di.ForFragment;
 import com.kachidoki.ma.moneytime2.Main.Fragment.Chart.ChartContract;
 import com.kachidoki.ma.moneytime2.Main.Fragment.Chart.ChartPresenter;
+import com.kachidoki.ma.moneytime2.Main.Fragment.Chart.DayChart.DayChartFragment;
+import com.kachidoki.ma.moneytime2.Main.Fragment.Chart.WeekChart.WeekChartFragment;
 
 import dagger.Module;
 import dagger.Provides;
@@ -23,5 +25,18 @@ public class ChartModule {
     ChartContract.Presenter providePresenter(){
         return new ChartPresenter(view);
     }
+
+    @ForFragment
+    @Provides
+    DayChartFragment provideDayChartFragment(){
+        return new DayChartFragment();
+    }
+
+    @ForFragment
+    @Provides
+    WeekChartFragment provideWeekChartFragment(){
+        return new WeekChartFragment();
+    }
+
 
 }

@@ -7,6 +7,7 @@ import com.kachidoki.ma.moneytime2.Main.Di.ForFragment;
 import com.kachidoki.ma.moneytime2.Main.Fragment.Host.HostAdapter;
 import com.kachidoki.ma.moneytime2.Main.Fragment.Host.HostContract;
 import com.kachidoki.ma.moneytime2.Main.Fragment.Host.HostPresenter;
+import com.kachidoki.ma.moneytime2.Model.Task.Source.TasksDataSource;
 
 import dagger.Module;
 import dagger.Provides;
@@ -24,8 +25,8 @@ public class HostModule {
 
     @ForFragment
     @Provides
-    HostContract.Presenter providePresenter(){
-        return new HostPresenter(view);
+    HostContract.Presenter providePresenter(TasksDataSource tasksDataSource){
+        return new HostPresenter(view,tasksDataSource);
     }
 
     @ForFragment
@@ -34,10 +35,5 @@ public class HostModule {
         return new HostAdapter(context);
     }
 
-    @ForFragment
-    @Provides
-    LinearLayoutManager provideLinearLayoutManager(Context context) {
-        return new LinearLayoutManager(context);
-    }
 
 }

@@ -1,21 +1,23 @@
 package com.kachidoki.ma.moneytime2.Main.Fragment.Host;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.kachidoki.ma.moneytime2.Add.AddActivity;
 import com.kachidoki.ma.moneytime2.App.Base.BaseLazyFragment;
 import com.kachidoki.ma.moneytime2.Main.Fragment.Host.Di.HostModule;
 import com.kachidoki.ma.moneytime2.Main.MainActivity;
@@ -28,6 +30,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by mayiwei on 2017/2/16.
@@ -40,8 +43,6 @@ public class HostFragment extends BaseLazyFragment implements HostContract.View 
     HostContract.Presenter presenter;
     @Inject
     HostAdapter adapter;
-    @Inject
-    LinearLayoutManager linearLayoutManager;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.host_topimg)
@@ -56,6 +57,8 @@ public class HostFragment extends BaseLazyFragment implements HostContract.View 
     RecyclerView hostRecycler;
     @BindView(R.id.host_RefreshLayout)
     SwipeRefreshLayout hostRefreshLayout;
+    @BindView(R.id.host_fab)
+    FloatingActionButton hostFab;
 
     @Override
     public void onAttach(Context context) {
@@ -75,9 +78,9 @@ public class HostFragment extends BaseLazyFragment implements HostContract.View 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_host, container, false);
         ButterKnife.bind(this, view);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         hostRecycler.setAdapter(adapter);
-        hostRecycler.setLayoutManager(linearLayoutManager);
+        hostRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         hostRefreshLayout.setColorSchemeColors(Color.BLUE, Color.GREEN, Color.RED, Color.YELLOW);
         hostRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -117,5 +120,16 @@ public class HostFragment extends BaseLazyFragment implements HostContract.View 
     @Override
     public void showPop() {
 
+    }
+
+    private void GoAddActivity(){
+        getActivity().startActivity(new Intent(getContext(), AddActivity.class));
+    }
+
+
+
+    @OnClick(R.id.host_fab)
+    public void onClick() {
+        GoAddActivity();
     }
 }

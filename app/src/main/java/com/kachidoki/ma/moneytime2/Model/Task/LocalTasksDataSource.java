@@ -53,7 +53,7 @@ public class LocalTasksDataSource implements TasksDataSource {
     @NonNull
     private final BriteDatabase mDatabaseHelper;
 
-    private LocalTasksDataSource(@NonNull Context context) {
+    public LocalTasksDataSource(@NonNull Context context) {
         DBOpenHelper dbHelper = new DBOpenHelper(context);
         SqlBrite sqlBrite = new SqlBrite.Builder().build();
         mDatabaseHelper = sqlBrite.wrapDatabaseHelper(dbHelper, Schedulers.io());

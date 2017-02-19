@@ -3,6 +3,14 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorAccent">
+    >
+
+    <include layout="@layout/inlcude_fragment_daychart_toolbar"/>
+    <FrameLayout
+        android:id="@+id/daychart_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </FrameLayout>
 
 </LinearLayout>

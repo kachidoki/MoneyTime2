@@ -10,6 +10,7 @@ import android.os.Bundle;
 import com.kachidoki.ma.moneytime2.App.App;
 
 //import com.kachidoki.ma.moneytime2.Main.Di.DaggerMainComponent;
+import com.kachidoki.ma.moneytime2.App.Base.BaseActivity;
 import com.kachidoki.ma.moneytime2.Main.Di.DaggerMainComponent;
 import com.kachidoki.ma.moneytime2.Main.Di.MainComponent;
 import com.kachidoki.ma.moneytime2.Main.Di.MainModule;
@@ -27,7 +28,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements MainContract.View{
+public class MainActivity extends BaseActivity implements MainContract.View{
 
     private List<Fragment> fragments;
     @BindView(R.id.main_viewpager)
@@ -55,12 +56,16 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        initViewPager();
+    }
+
+    @Override
+    protected void setupActivityComponent() {
         mainComponent = DaggerMainComponent.builder()
                 .appComponent(((App)getApplication()).getAppComponent())
                 .mainModule(new MainModule(this,this))
                 .build();
         mainComponent.inject(this);
-        initViewPager();
     }
 
 

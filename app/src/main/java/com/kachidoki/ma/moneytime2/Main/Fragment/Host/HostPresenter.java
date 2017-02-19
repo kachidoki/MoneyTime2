@@ -1,8 +1,8 @@
 package com.kachidoki.ma.moneytime2.Main.Fragment.Host;
 
-import android.util.Log;
 
 import com.kachidoki.ma.moneytime2.Model.Task.FakeData;
+import com.kachidoki.ma.moneytime2.Model.Task.Source.TasksDataSource;
 
 /**
  * Created by mayiwei on 2017/2/16.
@@ -11,9 +11,11 @@ import com.kachidoki.ma.moneytime2.Model.Task.FakeData;
 public class HostPresenter implements HostContract.Presenter {
 
     private HostContract.View view;
+    private TasksDataSource tasksRepository;
 
-    public HostPresenter(HostContract.View view){
+    public HostPresenter(HostContract.View view, TasksDataSource tasksDataSource){
         this.view = view;
+        this.tasksRepository = tasksDataSource;
     }
 
     @Override
