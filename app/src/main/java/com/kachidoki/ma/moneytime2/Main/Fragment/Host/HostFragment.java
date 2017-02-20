@@ -45,14 +45,6 @@ public class HostFragment extends BaseLazyFragment implements HostContract.View 
     HostAdapter adapter;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.host_topimg)
-    ImageView hostTopimg;
-    @BindView(R.id.host_monthAndYear)
-    TextView hostMonthAndYear;
-    @BindView(R.id.host_day)
-    TextView hostDay;
-    @BindView(R.id.host_weekDay)
-    TextView hostWeekDay;
     @BindView(R.id.host_recycler)
     RecyclerView hostRecycler;
     @BindView(R.id.host_RefreshLayout)
@@ -61,8 +53,7 @@ public class HostFragment extends BaseLazyFragment implements HostContract.View 
     FloatingActionButton hostFab;
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
+    protected void setupComponent(Context context) {
         ((MainActivity) context).getMainComponent()
                 .plus(new HostModule(this))
                 .inject(this);
@@ -95,6 +86,7 @@ public class HostFragment extends BaseLazyFragment implements HostContract.View 
     @Override
     public void onLazyLoad() {
         presenter.start();
+        presenter.loadTasks();
     }
 
     @Override

@@ -24,8 +24,7 @@ public class CommunityFragment extends BaseLazyFragment implements CommunityCont
     CommunityContract.Presenter presenter;
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
+    protected void setupComponent(Context context) {
         ((MainActivity)context).getMainComponent()
                 .plus(new CommunityModule(this))
                 .inject(this);

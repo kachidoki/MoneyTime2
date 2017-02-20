@@ -5,9 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.kachidoki.ma.moneytime2.Widget.WeekTable
-        android:id="@+id/weekchart_table"
+    <TextView
+        android:textSize="18sp"
+        android:gravity="center"
+        android:text="本周还没有事情记录"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="100dp" />
 
 </LinearLayout>

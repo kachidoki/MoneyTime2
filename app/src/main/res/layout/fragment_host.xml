@@ -2,7 +2,6 @@
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <View
@@ -15,7 +14,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <include layout="@layout/include_toolbar"/>
-        <include layout="@layout/include_fragment_host_topimg"/>
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/host_RefreshLayout"
             android:layout_width="match_parent"
@@ -33,7 +31,6 @@
         android:id="@+id/host_fab"
         android:layout_margin="32dp"
         android:src="@drawable/icon_fab_add"
-        app:layout_behavior="com.kachidoki.ma.moneytime2.Widget.ScrollAwareFABBehavior"
         app:layout_anchor="@id/host_recycler"
         app:layout_anchorGravity="bottom|right|end"/>
 </android.support.design.widget.CoordinatorLayout>

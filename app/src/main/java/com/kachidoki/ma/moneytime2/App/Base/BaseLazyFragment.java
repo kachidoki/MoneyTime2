@@ -1,5 +1,6 @@
 package com.kachidoki.ma.moneytime2.App.Base;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.UiThread;
@@ -16,6 +17,14 @@ public abstract class BaseLazyFragment extends Fragment {
     private boolean isLazyLoaded = false;
 
     private boolean isPrepared = false;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        setupComponent(context);
+    }
+
+    protected abstract void setupComponent(Context context);
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

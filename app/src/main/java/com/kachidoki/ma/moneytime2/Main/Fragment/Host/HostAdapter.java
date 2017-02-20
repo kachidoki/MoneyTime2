@@ -2,10 +2,12 @@ package com.kachidoki.ma.moneytime2.Main.Fragment.Host;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.ViewGroup;
 
 import com.kachidoki.ma.moneytime2.Model.Task.Task;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,9 +19,12 @@ public class HostAdapter extends RecyclerView.Adapter<HostBaseViewHolder> {
     private List<Task> taskList;
     private static final int NonmalView = 1;
     private static final int DayView = 2;
+    private static final int HeadView = 3;
+    private static final int NullView = 4;
 
     public HostAdapter(Context context){
         this.context = context;
+        taskList = new ArrayList<>();
     }
 
 
@@ -38,26 +43,37 @@ public class HostAdapter extends RecyclerView.Adapter<HostBaseViewHolder> {
             case DayView:
                 vh =  new ViewHolderDay(parent);
                 break;
+            case HeadView:
+                vh = new ViewHolderHead(parent);
+                break;
+            case NullView:
+                vh = new ViewHolderNull(parent);
+                break;
         }
         return vh;
     }
 
     @Override
     public void onBindViewHolder(HostBaseViewHolder holder, int position) {
-        holder.bind(taskList.get(position));
+        holder.bind(position>0?taskList.get(position-1):null);
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (taskList.get(position).color()==Task.BLACK){
-            return DayView;
+        if (position==0) return HeadView;
+        if (taskList.isEmpty()){
+            return NullView;
         }else {
-            return NonmalView;
+            if (taskList.get(position-1).color()==Task.BLACK){
+                return DayView;
+            }else {
+                return NonmalView;
+            }
         }
     }
 
     @Override
     public int getItemCount() {
-        return taskList==null?0:taskList.size();
+        return taskList.isEmpty()?1:taskList.size()+1;
     }
 }

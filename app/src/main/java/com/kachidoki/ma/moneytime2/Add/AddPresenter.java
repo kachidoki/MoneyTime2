@@ -34,7 +34,7 @@ public class AddPresenter implements AddContract.Presenter {
     @Override
     public void saveTask(String title, float startTime, float endTime, int year, int day, int month, int weekDay, int weekOfYear, int color, String description, boolean complete) {
         dataRespository.saveTask(title,startTime,endTime,year,day,month,weekDay,weekOfYear,color,description,complete);
-        view.finish();
+        view.saveIsOk();
     }
 
     @Override

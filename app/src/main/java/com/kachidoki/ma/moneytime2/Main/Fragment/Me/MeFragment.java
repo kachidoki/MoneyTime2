@@ -23,9 +23,9 @@ public class MeFragment extends BaseLazyFragment implements MeContract.View{
     @Inject
     MeContract.Presenter presenter;
 
+
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
+    protected void setupComponent(Context context) {
         ((MainActivity)context).getMainComponent()
                 .plus(new MeModule(this))
                 .inject(this);

@@ -1,7 +1,5 @@
-package com.kachidoki.ma.moneytime2.Main.Fragment.Host;
+package com.kachidoki.ma.moneytime2.Main.Fragment.Chart.WeekChart;
 
-
-import com.kachidoki.ma.moneytime2.Model.Task.FakeData;
 import com.kachidoki.ma.moneytime2.Model.Task.Source.TasksDataSource;
 import com.kachidoki.ma.moneytime2.Model.Task.Task;
 
@@ -15,70 +13,61 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 
 /**
- * Created by mayiwei on 2017/2/16.
+ * Created by mayiwei on 2017/2/20.
  */
 
-public class HostPresenter implements HostContract.Presenter {
-
+public class WeekChartPresenter implements WeekChartContract.Presenter{
     private int Year=0,Month=0,Day=0,WeekOfYear=0,WeekDay=0;
     final Calendar currentTime = Calendar.getInstance();
-    private HostContract.View view;
-    private TasksDataSource tasksRepository;
+    private WeekChartContract.View view;
+    private TasksDataSource DataRepository;
 
-    public HostPresenter(HostContract.View view, TasksDataSource tasksDataSource){
+    public WeekChartPresenter(WeekChartContract.View view,TasksDataSource dataSource){
         this.view = view;
-        this.tasksRepository = tasksDataSource;
+        this.DataRepository = dataSource;
+    }
+
+    @Override
+    public int getNowWeek() {
+        return WeekOfYear;
+    }
+
+    @Override
+    public void getWeekTasks() {
+        DataRepository.getWeekTasks(Year+"",WeekOfYear+"")
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<Task>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<Task> tasks) {
+                        view.showWeekTasks(tasks);
+                    }
+                });
+    }
+
+    @Override
+    public void nextWeek() {
+        WeekOfYear++;
+    }
+
+    @Override
+    public void previousWeek() {
+        WeekOfYear--;
     }
 
     @Override
     public void start() {
         SetChinaTime(currentTime);
-    }
-
-    @Override
-    public void loadTasks() {
-        tasksRepository.getWeekTasks(Year+"",WeekOfYear+"")
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<Task>>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(List<Task> tasks) {
-                        view.setTask(tasks);
-                        view.showTask();
-                    }
-                });
-    }
-
-    @Override
-    public void refresh() {
-        tasksRepository.getWeekTasks(Year+"",WeekOfYear+"")
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<Task>>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(List<Task> tasks) {
-                        view.setTask(tasks);
-                        view.showTask();
-                    }
-                });
+        view.setWeekText(WeekOfYear);
     }
 
     private void SetChinaTime(Calendar c){

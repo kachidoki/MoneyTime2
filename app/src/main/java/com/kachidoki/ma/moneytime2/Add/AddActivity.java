@@ -147,6 +147,12 @@ public class AddActivity extends BaseActivity implements AddContract.View {
 
     }
 
+    @Override
+    public void saveIsOk() {
+        finish();
+        Toast.makeText(AddActivity.this,"保存成功",Toast.LENGTH_LONG).show();
+    }
+
     private void showPickTime(){
         new DatePickerDialog(AddActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override

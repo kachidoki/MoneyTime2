@@ -32,7 +32,7 @@ public interface AddContract {
 
         void goToDo();
 
-        void finish();
+        void saveIsOk();
 
     }
     interface Presenter extends BasePresenter{
