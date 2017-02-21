@@ -65,6 +65,8 @@ public class AddActivity extends BaseActivity implements AddContract.View {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
         ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         presenter.start();
 
     }

@@ -17,6 +17,8 @@ public interface UserSource {
 
     Object getNowAccount();
 
+    User getNowUser();
+
     void LogOut();
 
     boolean isLogin();

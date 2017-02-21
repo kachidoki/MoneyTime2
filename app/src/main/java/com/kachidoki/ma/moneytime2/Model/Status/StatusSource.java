@@ -22,6 +22,10 @@ public interface StatusSource {
         void sucess();
     }
 
+    boolean checkIsLogin();
+
+    String getNowUserID();
+
     void sendStatus(String text, Bitmap bitmap,String inboxType,StatusCall call);
 
     void sendStatus(String text, String url,String inboxType,StatusCall call);

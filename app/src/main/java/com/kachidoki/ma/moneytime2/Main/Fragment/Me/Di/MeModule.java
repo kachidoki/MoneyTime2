@@ -3,6 +3,8 @@ package com.kachidoki.ma.moneytime2.Main.Fragment.Me.Di;
 import com.kachidoki.ma.moneytime2.Main.Di.ForFragment;
 import com.kachidoki.ma.moneytime2.Main.Fragment.Me.MeContract;
 import com.kachidoki.ma.moneytime2.Main.Fragment.Me.MePresenter;
+import com.kachidoki.ma.moneytime2.Model.Status.StatusSource;
+import com.kachidoki.ma.moneytime2.Model.User.UserSource;
 
 import dagger.Module;
 import dagger.Provides;
@@ -20,8 +22,8 @@ public class MeModule {
 
     @ForFragment
     @Provides
-    MeContract.Presenter providesPresenter(){
-        return new MePresenter(view);
+    MeContract.Presenter providesPresenter(StatusSource statusSource){
+        return new MePresenter(view,statusSource);
     }
 
 }

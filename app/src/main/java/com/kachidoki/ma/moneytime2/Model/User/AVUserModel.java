@@ -49,6 +49,11 @@ public class AVUserModel implements UserSource {
     }
 
     @Override
+    public User getNowUser() {
+        return mapperToUser(AVUser.getCurrentUser());
+    }
+
+    @Override
     public void LogOut() {
         AVUser.logOut();
     }

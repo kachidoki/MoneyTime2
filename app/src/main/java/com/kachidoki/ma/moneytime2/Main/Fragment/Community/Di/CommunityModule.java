@@ -1,8 +1,13 @@
 package com.kachidoki.ma.moneytime2.Main.Fragment.Community.Di;
 
+import android.content.Context;
+
 import com.kachidoki.ma.moneytime2.Main.Di.ForFragment;
+import com.kachidoki.ma.moneytime2.Main.Fragment.Community.CommunityAdapter;
 import com.kachidoki.ma.moneytime2.Main.Fragment.Community.CommunityContract;
 import com.kachidoki.ma.moneytime2.Main.Fragment.Community.CommunityPresenter;
+import com.kachidoki.ma.moneytime2.Model.Status.StatusSource;
+import com.kachidoki.ma.moneytime2.Model.User.UserSource;
 
 import dagger.Module;
 import dagger.Provides;
@@ -20,9 +25,13 @@ public class CommunityModule {
 
     @ForFragment
     @Provides
-    CommunityContract.Presenter providePresenter(){
-        return new CommunityPresenter(view);
+    CommunityContract.Presenter providePresenter(StatusSource statusSource){
+        return new CommunityPresenter(view,statusSource);
     }
 
-
+    @ForFragment
+    @Provides
+    CommunityAdapter providesAdapter(Context context, UserSource userSource){
+        return new CommunityAdapter(context,userSource);
+    }
 }

@@ -1,6 +1,7 @@
 package com.kachidoki.ma.moneytime2.Main.Fragment.Chart;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
@@ -89,6 +90,7 @@ public class ChartFragment extends BaseLazyFragment implements ChartContract.Vie
             transaction.commit();
         }
         isDayFragmentShow = true;
+        setTagColor();
     }
 
     @OnClick({R.id.chart_toolbar_day, R.id.chart_toolbar_week})
@@ -105,6 +107,7 @@ public class ChartFragment extends BaseLazyFragment implements ChartContract.Vie
                         transaction.commit();
                     }
                     isDayFragmentShow = true;
+                    setTagColor();
                 }
                 break;
             case R.id.chart_toolbar_week:
@@ -118,8 +121,23 @@ public class ChartFragment extends BaseLazyFragment implements ChartContract.Vie
                         transaction.commit();
                     }
                     isDayFragmentShow = false;
+                    setTagColor();
                 }
                 break;
+        }
+    }
+
+    private void setTagColor(){
+        if (isDayFragmentShow){
+            chartToolbarWeek.setBackgroundResource(R.color.papuler);
+            chartToolbarWeek.setTextColor(getResources().getColor(R.color.White));
+            chartToolbarDay.setBackgroundResource(R.color.White);
+            chartToolbarDay.setTextColor(getResources().getColor(R.color.papuler));
+        }else {
+            chartToolbarDay.setBackgroundResource(R.color.papuler);
+            chartToolbarDay.setTextColor(getResources().getColor(R.color.White));
+            chartToolbarWeek.setBackgroundResource(R.color.White);
+            chartToolbarWeek.setTextColor(getResources().getColor(R.color.papuler));
         }
     }
 

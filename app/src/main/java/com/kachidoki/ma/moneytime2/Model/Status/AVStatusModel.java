@@ -42,6 +42,16 @@ public class AVStatusModel implements StatusSource {
 
 
     @Override
+    public boolean checkIsLogin() {
+        return userModel.isLogin();
+    }
+
+    @Override
+    public String getNowUserID() {
+        return userModel.getNowUser().objectId();
+    }
+
+    @Override
     public void sendStatus(final String text, Bitmap bitmap, final String inboxType, final StatusCall call) {
         if (!userModel.isLogin()) return;
         if (bitmap != null) {
