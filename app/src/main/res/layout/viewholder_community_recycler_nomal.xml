@@ -68,11 +68,13 @@
         android:gravity="right">
         <ImageView
             android:id="@+id/holder_community_like"
+            android:src="@drawable/icon_like_1"
             android:layout_width="32dp"
             android:layout_height="32dp"
             />
         <ImageView
             android:id="@+id/holder_community_comment"
+            android:src="@drawable/icon_comment_1"
             android:layout_width="32dp"
             android:layout_height="32dp"
             />

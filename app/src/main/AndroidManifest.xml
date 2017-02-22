@@ -21,7 +21,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".Add.AddActivity">
-
+        </activity>
+        <activity android:name=".RegLogin.Login.LoginActivity">
+        </activity>
+        <activity android:name=".RegLogin.Register.RegisterActivity">
         </activity>
     </application>
 

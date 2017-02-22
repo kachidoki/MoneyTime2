@@ -172,7 +172,6 @@ public class AVStatusModel implements StatusSource {
                 avstatus.getMessage(),
                 avstatus.getCreatedAt(),
                 new AutoValue_Status_StatusDetil(commentlist,likes));
-
     }
 
     private List<Status.Comment> mapperComment(List<AVObject> comment){

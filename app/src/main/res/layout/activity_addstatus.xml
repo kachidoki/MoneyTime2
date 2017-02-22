@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include layout="@layout/include_toolbar"/>
+    <EditText
+        android:id="@+id/addstatus_message"
+        android:layout_margin="16dp"
+        android:hint="说点什么吧..."
+        android:gravity="start"
+        android:layout_width="match_parent"
+        android:layout_height="120dp" />
+    <LinearLayout
+        android:layout_marginLeft="16dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/addstatus_img"
+            android:src="@drawable/icon_addimg"
+            android:layout_width="100dp"
+            android:layout_height="100dp" />
+    </LinearLayout>
+
+    <Button
+        android:layout_marginTop="16dp"
+        android:id="@+id/addstatus_send"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="?colorPrimary"
+        android:textSize="18sp"
+        android:textColor="@color/White"
+        android:text="发送"
+        />
+
+</LinearLayout>
