@@ -22,8 +22,8 @@ public class MeModule {
 
     @ForFragment
     @Provides
-    MeContract.Presenter providesPresenter(StatusSource statusSource){
-        return new MePresenter(view,statusSource);
+    MeContract.Presenter providesPresenter(StatusSource statusSource,UserSource userSource){
+        return new MePresenter(view,statusSource,userSource);
     }
 
 }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kachidoki.ma.moneytime2.App.Base.BaseLazyFragment;
 import com.kachidoki.ma.moneytime2.Main.Fragment.Me.Di.MeModule;
@@ -52,6 +54,8 @@ public class MeFragment extends BaseLazyFragment implements MeContract.View {
     Switch meIsusenet;
     @BindView(R.id.me_userName)
     TextView meUserName;
+    @BindView(R.id.me_logout)
+    LinearLayout meLogout;
 
 
     @Override
@@ -78,10 +82,11 @@ public class MeFragment extends BaseLazyFragment implements MeContract.View {
 
     @Override
     public void onLazyLoad() {
+        Log.e("Test","ME onLazyLoad");
         presenter.start();
     }
 
-    @OnClick({R.id.me_mystatus, R.id.me_myfollowing, R.id.me_myfollower})
+    @OnClick({R.id.me_mystatus, R.id.me_myfollowing, R.id.me_myfollower,R.id.me_userme,R.id.me_logout})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.me_mystatus:
@@ -89,6 +94,12 @@ public class MeFragment extends BaseLazyFragment implements MeContract.View {
             case R.id.me_myfollowing:
                 break;
             case R.id.me_myfollower:
+                break;
+            case R.id.me_userme:
+                presenter.OnUserImgClick();
+                break;
+            case R.id.me_logout:
+                presenter.logout();
                 break;
         }
     }
@@ -98,27 +109,37 @@ public class MeFragment extends BaseLazyFragment implements MeContract.View {
         meUserName.setText("请先登录");
         meUserme.setImageDrawable(getResources().getDrawable(R.drawable.icon_nolog));
         meUserstatus.setVisibility(View.GONE);
+        meLogout.setVisibility(View.GONE);
     }
 
     @Override
+    public void showLogin() {
+        presenter.loadLoginUser();
+        meLogout.setVisibility(View.VISIBLE);
+        meUserstatus.setVisibility(View.VISIBLE);
+    }
+
+
+    @Override
     public void setStatusNum(int num) {
-        meMystatus.setText("动态 "+num);
+        meMystatus.setText("动态 " + num);
     }
 
     @Override
     public void setFollowerNum(int num) {
-        meMyfollower.setText("粉丝 "+num);
+        meMyfollower.setText("粉丝 " + num);
     }
 
     @Override
     public void setFollowingNum(int num) {
-        meMyfollowing.setText("关注 "+num);
+        meMyfollowing.setText("关注 " + num);
     }
 
 
     @Override
     public void setUser(User user) {
         meUserName.setText(user.username());
+        meUserme.setImageDrawable(getResources().getDrawable(R.drawable.icon_usernoimg));
     }
 
     @Override
@@ -131,8 +152,10 @@ public class MeFragment extends BaseLazyFragment implements MeContract.View {
         startActivity(new Intent(getContext(), LoginActivity.class));
     }
 
-    @OnClick(R.id.me_userme)
-    public void onClick() {
-        presenter.OnUserImgClick();
+    @Override
+    public void showLogout() {
+        Toast.makeText(getContext(),"已退出",Toast.LENGTH_LONG).show();
+        showNotLogin();
     }
+
 }

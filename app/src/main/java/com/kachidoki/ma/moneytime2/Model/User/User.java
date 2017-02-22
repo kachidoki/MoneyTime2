@@ -16,8 +16,8 @@ public abstract class User implements Parcelable {
     public abstract String objectId();
     @Nullable public abstract String email();
     @Nullable public abstract String sessionToken();
-    public abstract String username();
-    public abstract String phoneNumber();
+    @Nullable public abstract String username();
+    @Nullable public abstract String phoneNumber();
     public abstract boolean phoneVerified();
 
 }

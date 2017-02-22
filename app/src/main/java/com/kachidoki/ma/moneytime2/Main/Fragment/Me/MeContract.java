@@ -13,6 +13,8 @@ public interface MeContract {
 
         void showNotLogin();
 
+        void showLogin();
+
         void setStatusNum(int num);
 
         void setFollowerNum(int num);
@@ -25,14 +27,17 @@ public interface MeContract {
 
         void gotoLogin();
 
+        void showLogout();
+
     }
 
     interface Presenter extends BasePresenter{
 
-
-        boolean checkIsLogin();
+        void loadLoginUser();
 
         void OnUserImgClick();
+
+        void logout();
 
     }
 }

@@ -8,9 +8,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.kachidoki.ma.moneytime2.App.Base.BaseLazyFragment;
 import com.kachidoki.ma.moneytime2.Main.Fragment.Community.Di.CommunityModule;
@@ -36,7 +41,7 @@ public class CommunityFragment extends BaseLazyFragment implements CommunityCont
     @Inject
     CommunityAdapter adapter;
 
-    @BindView(R.id.toolbar)
+    @BindView(R.id.community_toolbar)
     Toolbar toolbar;
     @BindView(R.id.community_recycler)
     RecyclerView communityRecycler;
@@ -56,6 +61,7 @@ public class CommunityFragment extends BaseLazyFragment implements CommunityCont
         View view = inflater.inflate(R.layout.fragment_community, container, false);
         ButterKnife.bind(this, view);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("社区");
         communityRecycler.setAdapter(adapter);
         communityRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         communityRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -66,7 +72,6 @@ public class CommunityFragment extends BaseLazyFragment implements CommunityCont
         });
         return view;
     }
-
 
     @Override
     public void onLazyLoad() {
@@ -88,4 +93,5 @@ public class CommunityFragment extends BaseLazyFragment implements CommunityCont
         adapter.setData(statuses);
         communityRefreshLayout.setRefreshing(false);
     }
+
 }

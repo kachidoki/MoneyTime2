@@ -55,7 +55,9 @@ public class CommunityAdapter extends RecyclerView.Adapter<CommunityBaseViewhold
     @Override
     public void onBindViewHolder(CommunityBaseViewholder holder, int position) {
         holder.bind(position>0?statusList.get(position-1):null);
-        holder.bindUser(userSource.getNowUser());
+        if (userSource.isLogin()){
+            holder.bindUser(userSource.getNowUser());
+        }
     }
 
     @Override

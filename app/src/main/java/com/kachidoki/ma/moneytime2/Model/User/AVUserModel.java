@@ -1,5 +1,7 @@
 package com.kachidoki.ma.moneytime2.Model.User;
 
+import android.util.Log;
+
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.LogInCallback;
@@ -70,6 +72,10 @@ public class AVUserModel implements UserSource {
 
     @Override
     public User mapperToUser(Object user) {
+//        Log.e("Test","AVUSERMODEL  mapperToUser");
+//        Log.e("Test","objid = "+((AVUser)user).getObjectId());
+//        Log.e("Test","name = "+((AVUser)user).getUsername());
+//        Log.e("Test","isMobilePhoneVerified = "+((AVUser)user).isMobilePhoneVerified());
         return new AutoValue_User(((AVUser)user).getObjectId(),
                 ((AVUser)user).getEmail(),
                 ((AVUser)user).getSessionToken(),

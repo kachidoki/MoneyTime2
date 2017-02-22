@@ -151,20 +151,29 @@ public class AVStatusModel implements StatusSource {
                     throw Exceptions.propagate(e);
                 }
             }
-        }).toList().observeOn(Schedulers.io());
+        }).toList().subscribeOn(Schedulers.io());
     }
 
 
     private Status mapperStatus(AVStatus avstatus) throws Exception{
-        AVObject statusdetil = avstatus.getAVObject(Status.STATUS_DETAIL);
+//        AVObject statusdetil = avstatus.getAVObject(Status.STATUS_DETAIL);
+
+
+        Map<String, Object> data = avstatus.getData();
+        String detailId = (String) data.get(Status.DETAIL_ID);
+        AVObject statusdetil = AVObject.createWithoutData(Status.STATUS_DETAIL, detailId);
+
+
+
         List<String> likes = (List<String>) statusdetil.get(Status.LIKES);
-        AVRelation<AVObject> relation = statusdetil.getRelation(Status.COMMENT);
-        AVQuery<AVObject> query = relation.getQuery();
-        List<AVObject> comments = query.find();
+//        AVRelation<AVObject> relation = statusdetil.getRelation(Status.COMMENT);
+//        AVQuery<AVObject> query = relation.getQuery();
+//        List<AVObject> comments = query.find();
+        List<AVObject> comments = null;
         List<Status.Comment> commentlist = mapperComment(comments);
         return new AutoValue_Status(avstatus.getObjectId(),
                 (String) avstatus.get(Status.DETAIL_ID),
-                (String)avstatus.get(Status.INBOXTYPE),
+                avstatus.getInboxType(),
                 avstatus.getSource().getUsername(),
                 (String)avstatus.getSource().get(User.IMGURL),
                 avstatus.getImageUrl(),
@@ -233,7 +242,7 @@ public class AVStatusModel implements StatusSource {
             public User call(AVUser avUser) {
                 return userModel.mapperToUser(avUser);
             }
-        }).toList().observeOn(Schedulers.io());
+        }).toList().subscribeOn(Schedulers.io());
     }
 
 
@@ -260,7 +269,7 @@ public class AVStatusModel implements StatusSource {
             public User call(AVUser avUser) {
                 return userModel.mapperToUser(avUser);
             }
-        }).toList().observeOn(Schedulers.io());
+        }).toList().subscribeOn(Schedulers.io());
     }
 
 

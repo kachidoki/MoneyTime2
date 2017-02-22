@@ -23,9 +23,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:text="用户名"/>
+            android:text=""/>
     </LinearLayout>
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/me_userstatus"
         android:orientation="horizontal"
         android:background="@color/BlueTight"
@@ -39,7 +40,7 @@
             android:textColor="@color/White"
             android:textSize="18sp"
             android:gravity="center"
-            android:text="66动态"/>
+            android:text="动态"/>
         <View
             android:background="@color/White"
             android:layout_width="2dp"
@@ -54,7 +55,7 @@
             android:textColor="@color/White"
             android:textSize="18sp"
             android:gravity="center"
-            android:text="66关注"/>
+            android:text="关注"/>
         <View
             android:background="@color/White"
             android:layout_width="2dp"
@@ -69,6 +70,6 @@
             android:textColor="@color/White"
             android:textSize="18sp"
             android:gravity="center"
-            android:text="66粉丝"/>
+            android:text="粉丝"/>
     </LinearLayout>
 </LinearLayout>
