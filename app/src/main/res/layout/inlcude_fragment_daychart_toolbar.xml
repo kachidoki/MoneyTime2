@@ -13,13 +13,13 @@
         android:layout_width="48dp"
         android:layout_height="36dp"
         android:gravity="center"
-        android:background="@color/Red"
+        android:background="@color/White"
         android:textColor="#fff"
         android:text="今日"
         android:layout_gravity="center" />
     <TextView
         android:id="@+id/chart_toolbar_week"
-        android:background="@color/Orange"
+        android:background="@color/papuler"
         android:padding="2dp"
         android:layout_width="48dp"
         android:layout_height="36dp"

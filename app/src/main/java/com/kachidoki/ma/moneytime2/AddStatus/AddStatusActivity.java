@@ -1,6 +1,10 @@
 package com.kachidoki.ma.moneytime2.AddStatus;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +18,8 @@ import com.kachidoki.ma.moneytime2.App.App;
 import com.kachidoki.ma.moneytime2.App.Base.BaseActivity;
 import com.kachidoki.ma.moneytime2.R;
 
+import java.io.IOException;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -25,7 +31,7 @@ import butterknife.OnClick;
  */
 
 public class AddStatusActivity extends BaseActivity implements AddStatusContract.View {
-
+    private static final int IMAGE_PICK_REQUEST = 0;
     @Inject
     AddStatusContract.Presenter presenter;
     @BindView(R.id.toolbar)
@@ -56,9 +62,10 @@ public class AddStatusActivity extends BaseActivity implements AddStatusContract
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.addstatus_img:
+                pickImage(this,IMAGE_PICK_REQUEST);
                 break;
             case R.id.addstatus_send:
-                presenter.send(addstatusMessage.getText().toString(),null);
+                presenter.send(addstatusMessage.getText().toString());
                 break;
         }
     }
@@ -77,5 +84,26 @@ public class AddStatusActivity extends BaseActivity implements AddStatusContract
     @Override
     public void sendFail(Exception e) {
         Toast.makeText(AddStatusActivity.this,"发送失败",Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == IMAGE_PICK_REQUEST) {
+                Uri uri = data.getData();
+                try {
+                    presenter.setBitmip(MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private static void pickImage(Activity activity, int requestCode) {
+        Intent intent = new Intent(Intent.ACTION_PICK, null);
+        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+        activity.startActivityForResult(intent, requestCode);
     }
 }

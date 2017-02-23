@@ -76,6 +76,7 @@ public class AVUserModel implements UserSource {
 //        Log.e("Test","objid = "+((AVUser)user).getObjectId());
 //        Log.e("Test","name = "+((AVUser)user).getUsername());
 //        Log.e("Test","isMobilePhoneVerified = "+((AVUser)user).isMobilePhoneVerified());
+        if (user==null) return null;
         return new AutoValue_User(((AVUser)user).getObjectId(),
                 ((AVUser)user).getEmail(),
                 ((AVUser)user).getSessionToken(),

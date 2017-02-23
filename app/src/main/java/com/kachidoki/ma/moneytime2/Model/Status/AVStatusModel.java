@@ -95,9 +95,9 @@ public class AVStatusModel implements StatusSource {
                     status.setMessage(text);
                     status.setImageUrl(url);
                     Map<String, Object> datas = new HashMap<>();
-//                    datas.put(Status.STATUS_DETAIL, statusDetail);
-                    datas.put(Status.DETAIL_ID,statusDetail.getObjectId());
+                    datas.put(Status.STATUS_DETAIL,statusDetail);
                     status.setData(datas);
+                    //选择inbox
 //            status.setInboxType("system");
 //            AVStatus.sendPrivateStatusInBackgroud(status,"588f36f51b69e600596715c6",saveCallback);
 //            status.sendInBackground(saveCallback);
@@ -135,6 +135,7 @@ public class AVStatusModel implements StatusSource {
                     AVQuery<AVObject> query = AVQuery.or(Arrays.asList(querytimeline,querysystem));
                     query.orderByDescending(Status.CREATED_AT);
                     query.include(Status.SOURCE);
+                    query.include(Status.STATUS_DETAIL);
                     subscriber.onNext(query.find());
                     subscriber.onCompleted();
                 } catch (AVException e) {
@@ -195,13 +196,14 @@ public class AVStatusModel implements StatusSource {
 
 
     private Status mapperStatus(AVObject avObject) throws Exception{
-        String detailId = (String) avObject.get(Status.DETAIL_ID);
-        AVObject statusdetil = AVObject.createWithoutData(Status.STATUS_DETAIL, detailId);
+//        String detailId = (String) avObject.get(Status.DETAIL_ID);
+//        AVObject statusdetil = AVObject.createWithoutData(Status.STATUS_DETAIL, detailId);
+        AVObject statusdetil = avObject.getAVObject(Status.STATUS_DETAIL);
         List<String> likes = (List<String>) statusdetil.get(Status.LIKES);
+        if (likes==null) likes = new ArrayList<>();
         List<AVObject> comments = null;
         List<Status.Comment> commentlist = mapperComment(comments);
         return new AutoValue_Status(avObject.getObjectId(),
-                (String) avObject.get(Status.DETAIL_ID),
                 (String)avObject.get(Status.INBOXTYPE),
                 ((AVUser)avObject.getAVObject(Status.SOURCE)).getUsername(),
                 (String)avObject.getAVObject(Status.SOURCE).get(User.IMGURL),
@@ -209,27 +211,24 @@ public class AVStatusModel implements StatusSource {
                 avObject.getAVObject(Status.SOURCE).getObjectId(),
                 (String)avObject.get(Status.MESSAGE),
                 avObject.getCreatedAt(),
-                new AutoValue_Status_StatusDetil(commentlist,likes));
+                new AutoValue_Status_StatusDetil(statusdetil.getObjectId(),commentlist,likes));
     }
 
     private Status mapperStatus(AVStatus avstatus) throws Exception{
-//        AVObject statusdetil = avstatus.getAVObject(Status.STATUS_DETAIL);
-
-
-        Map<String, Object> data = avstatus.getData();
-        String detailId = (String) data.get(Status.DETAIL_ID);
-        AVObject statusdetil = AVObject.createWithoutData(Status.STATUS_DETAIL, detailId);
-
-
+        AVObject statusdetil = avstatus.getAVObject(Status.STATUS_DETAIL);
+//当还是detilID时
+//        Map<String, Object> data = avstatus.getData();
+//        String detailId = (String) data.get(Status.DETAIL_ID);
+//        AVObject statusdetil = AVObject.createWithoutData(Status.STATUS_DETAIL, detailId);
 
         List<String> likes = (List<String>) statusdetil.get(Status.LIKES);
+
 //        AVRelation<AVObject> relation = statusdetil.getRelation(Status.COMMENT);
 //        AVQuery<AVObject> query = relation.getQuery();
 //        List<AVObject> comments = query.find();
         List<AVObject> comments = null;
         List<Status.Comment> commentlist = mapperComment(comments);
         return new AutoValue_Status(avstatus.getObjectId(),
-                (String) avstatus.get(Status.DETAIL_ID),
                 avstatus.getInboxType(),
                 avstatus.getSource().getUsername(),
                 (String)avstatus.getSource().get(User.IMGURL),
@@ -237,7 +236,7 @@ public class AVStatusModel implements StatusSource {
                 avstatus.getSource().getObjectId(),
                 avstatus.getMessage(),
                 avstatus.getCreatedAt(),
-                new AutoValue_Status_StatusDetil(commentlist,likes));
+                new AutoValue_Status_StatusDetil(statusdetil.getObjectId(),commentlist,likes));
     }
 
     private List<Status.Comment> mapperComment(List<AVObject> comment){
@@ -258,15 +257,23 @@ public class AVStatusModel implements StatusSource {
     @Override
     public void deleteStatus(Status s) {
         AVObject avstatus = AVObject.createWithoutData(Status.TABLE,s.objectId());
-        AVObject detil = AVObject.createWithoutData(Status.STATUS_DETAIL,s.detailId());
         avstatus.deleteInBackground();
-        detil.deleteInBackground();
     }
 
     @Override
-    public void likeStatus() {
-//        detail.put(App.LIKES, likes);
-//        detail.saveInBackground(saveCallback);
+    public void likeStatus(String detil, List<String> likes, final StatusCall statusCall) {
+        AVObject detilOBJ = AVObject.createWithoutData(Status.STATUS_DETAIL,detil);
+        detilOBJ.put(Status.LIKES, likes);
+        detilOBJ.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(AVException e) {
+                if (e!=null){
+                    statusCall.fail(e);
+                }else {
+                    statusCall.sucess();
+                }
+            }
+        });
     }
 
     @Override

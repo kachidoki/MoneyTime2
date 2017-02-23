@@ -31,7 +31,6 @@ public class MePresenter implements MeContract.Presenter {
 
     @Override
     public void start() {
-        Log.e("Test","mePresenter start");
         if (statusSource.checkIsLogin()){
             loadLoginUser();
             view.showLogin();
@@ -46,8 +45,6 @@ public class MePresenter implements MeContract.Presenter {
     @Override
     public void loadLoginUser() {
         loadStatusNum();
-        loadFollowerNum();
-        loadFollowingNum();
         view.setUser(userSource.getNowUser());
     }
 
@@ -74,6 +71,7 @@ public class MePresenter implements MeContract.Presenter {
                     @Override
                     public void call(List<Status> statuses) {
                         if (statuses!=null) view.setStatusNum(statuses.size());
+                        loadFollowerNum();
                     }
                 });
     }
@@ -85,6 +83,7 @@ public class MePresenter implements MeContract.Presenter {
                     @Override
                     public void call(List<User> users) {
                         if (users!=null) view.setFollowerNum(users.size());
+                        loadFollowingNum();
                     }
                 });
     }

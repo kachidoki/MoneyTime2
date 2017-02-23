@@ -25,13 +25,13 @@ public class CommunityModule {
 
     @ForFragment
     @Provides
-    CommunityContract.Presenter providePresenter(StatusSource statusSource){
-        return new CommunityPresenter(view,statusSource);
+    CommunityContract.Presenter providePresenter(StatusSource statusSource,UserSource userSource){
+        return new CommunityPresenter(view,statusSource,userSource);
     }
 
     @ForFragment
     @Provides
-    CommunityAdapter providesAdapter(Context context, UserSource userSource){
-        return new CommunityAdapter(context,userSource);
+    CommunityAdapter providesAdapter(Context context,StatusSource statusSource){
+        return new CommunityAdapter(context,statusSource);
     }
 }

@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.kachidoki.ma.moneytime2.Model.Status.Status;
 import com.kachidoki.ma.moneytime2.Model.Status.StatusSource;
+import com.kachidoki.ma.moneytime2.Model.User.UserSource;
 
 import java.util.List;
 
@@ -17,26 +18,35 @@ import rx.android.schedulers.AndroidSchedulers;
 public class CommunityPresenter implements CommunityContract.Presenter {
     private CommunityContract.View view;
     private StatusSource statusSource;
+    private UserSource userSource;
 
-    public CommunityPresenter(CommunityContract.View view,StatusSource statusSource){
+    public CommunityPresenter(CommunityContract.View view,StatusSource statusSource,UserSource userSource){
         this.view = view;
         this.statusSource = statusSource;
+        this.userSource = userSource;
     }
 
 
     @Override
     public void start() {
+        loadUser();
         loadStatus();
     }
 
     @Override
+    public void loadUser() {
+        view.setUser(userSource.getNowUser());
+    }
+
+    @Override
     public void loadStatus() {
+        view.showLoading();
         statusSource.getStatus()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<Status>>() {
                     @Override
                     public void onCompleted() {
-                        Log.e("Test","onCompleted");
+
                     }
 
                     @Override
@@ -46,13 +56,16 @@ public class CommunityPresenter implements CommunityContract.Presenter {
 
                     @Override
                     public void onNext(List<Status> statuses) {
-
+                        view.setTask(statuses);
                     }
                 });
     }
 
     @Override
     public void refresh() {
-
+        loadStatus();
     }
+
+
+
 }

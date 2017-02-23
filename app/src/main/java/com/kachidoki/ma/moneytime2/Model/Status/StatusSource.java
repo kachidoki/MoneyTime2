@@ -38,7 +38,7 @@ public interface StatusSource {
 
     void deleteStatus(Status status);
 
-    void likeStatus();
+    void likeStatus(String detil,List<String> likes,StatusCall statusCall);
 
     Observable<List<Status.Comment>> getStatusComment();
 

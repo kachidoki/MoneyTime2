@@ -20,6 +20,8 @@ public interface AddStatusContract {
     }
 
     interface Presenter extends BasePresenter{
-        void send(String message, Bitmap bitmap);
+        void send(String message);
+
+        void setBitmip(Bitmap bitmip);
     }
 }

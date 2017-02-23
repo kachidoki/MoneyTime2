@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.UiThread;
 import android.support.v4.app.Fragment;
+import android.view.View;
 
 /**
  * Created by mayiwei on 2017/2/16.
@@ -27,8 +28,8 @@ public abstract class BaseLazyFragment extends Fragment {
     protected abstract void setupComponent(Context context);
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         isPrepared = true;
         lazyLoad();
     }
@@ -44,7 +45,7 @@ public abstract class BaseLazyFragment extends Fragment {
      */
 
     private void lazyLoad() {
-        if (getUserVisibleHint() && isPrepared && !isLazyLoaded) {
+        if (getUserVisibleHint() && isPrepared) {
             onLazyLoad();
             isLazyLoaded = true;
         }

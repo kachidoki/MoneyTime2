@@ -2,6 +2,7 @@ package com.kachidoki.ma.moneytime2.Main.Fragment.Community;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -19,6 +20,7 @@ import com.kachidoki.ma.moneytime2.App.Base.BaseLazyFragment;
 import com.kachidoki.ma.moneytime2.Main.Fragment.Community.Di.CommunityModule;
 import com.kachidoki.ma.moneytime2.Main.MainActivity;
 import com.kachidoki.ma.moneytime2.Model.Status.Status;
+import com.kachidoki.ma.moneytime2.Model.User.User;
 import com.kachidoki.ma.moneytime2.R;
 
 import java.util.List;
@@ -65,6 +67,7 @@ public class CommunityFragment extends BaseLazyFragment implements CommunityCont
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("社区");
         communityRecycler.setAdapter(adapter);
         communityRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        communityRefreshLayout.setColorSchemeColors(Color.BLUE, Color.GREEN, Color.RED, Color.YELLOW);
         communityRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -93,6 +96,11 @@ public class CommunityFragment extends BaseLazyFragment implements CommunityCont
     public void setTask(List<Status> statuses) {
         adapter.setData(statuses);
         communityRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void setUser(User user) {
+        adapter.setUser(user);
     }
 
     @OnClick(R.id.commnuity_fab)

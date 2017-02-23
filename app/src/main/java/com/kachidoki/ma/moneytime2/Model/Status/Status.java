@@ -37,7 +37,7 @@ public abstract class Status implements Parcelable{
     public static final int NONE_FOLLOW = 3; //can follow
 
     public abstract String objectId();
-    public abstract String detailId();
+//    public abstract String detailId();
     public abstract String inboxType();
     public abstract String Postername();
     @Nullable public abstract String Posterimg();
@@ -49,6 +49,7 @@ public abstract class Status implements Parcelable{
 
     @AutoValue
     public abstract static class StatusDetil implements Parcelable{
+        @Nullable public abstract String detailId();
         @Nullable public abstract List<Comment> comments();
         @Nullable public abstract List<String> likes();
     }

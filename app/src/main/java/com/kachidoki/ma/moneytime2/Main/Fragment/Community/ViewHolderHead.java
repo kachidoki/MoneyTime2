@@ -39,6 +39,9 @@ public class ViewHolderHead extends CommunityBaseViewholder {
         if (user == null) {
             holderCommunityMyUserImg.setImageDrawable(itemView.getResources().getDrawable(R.drawable.icon_nolog));
             holderCommunityMyUserName.setText("请先登录");
+        }else {
+            holderCommunityMyUserImg.setImageDrawable(itemView.getResources().getDrawable(R.drawable.icon_nolog));
+            holderCommunityMyUserName.setText(user.username());
         }
     }
 

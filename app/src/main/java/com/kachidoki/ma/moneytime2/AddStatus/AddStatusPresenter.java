@@ -15,6 +15,7 @@ public class AddStatusPresenter implements AddStatusContract.Presenter {
 
     private AddStatusContract.View view;
     private StatusSource statusSource;
+    private Bitmap bitmap;
 
     public AddStatusPresenter(AddStatusContract.View view,StatusSource statusSource){
         this.view =view;
@@ -27,7 +28,7 @@ public class AddStatusPresenter implements AddStatusContract.Presenter {
     }
 
     @Override
-    public void send(String message, Bitmap bitmap) {
+    public void send(String message) {
         if (!message.isEmpty()||bitmap!=null){
             statusSource.sendStatus(message, bitmap, Status.INBOX_TIMELINE, new StatusSource.StatusCall() {
                 @Override
@@ -41,5 +42,10 @@ public class AddStatusPresenter implements AddStatusContract.Presenter {
                 }
             });
         }
+    }
+
+    @Override
+    public void setBitmip(Bitmap bitmip) {
+        this.bitmap = bitmip;
     }
 }

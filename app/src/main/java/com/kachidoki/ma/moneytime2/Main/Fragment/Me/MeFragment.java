@@ -76,13 +76,14 @@ public class MeFragment extends BaseLazyFragment implements MeContract.View {
         View view = inflater.inflate(R.layout.fragment_me, container, false);
         ButterKnife.bind(this, view);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("个人");
         return view;
     }
 
 
+
     @Override
     public void onLazyLoad() {
-        Log.e("Test","ME onLazyLoad");
         presenter.start();
     }
 
