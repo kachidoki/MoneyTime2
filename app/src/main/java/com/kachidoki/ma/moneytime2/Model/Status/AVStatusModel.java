@@ -2,6 +2,7 @@ package com.kachidoki.ma.moneytime2.Model.Status;
 
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVFile;
@@ -16,7 +17,9 @@ import com.kachidoki.ma.moneytime2.Model.User.User;
 import com.kachidoki.ma.moneytime2.Model.User.UserSource;
 
 import java.io.ByteArrayOutputStream;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +27,7 @@ import java.util.Map;
 import rx.Observable;
 import rx.Subscriber;
 import rx.exceptions.Exceptions;
+import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -91,7 +95,8 @@ public class AVStatusModel implements StatusSource {
                     status.setMessage(text);
                     status.setImageUrl(url);
                     Map<String, Object> datas = new HashMap<>();
-                    datas.put(Status.STATUS_DETAIL, statusDetail);
+//                    datas.put(Status.STATUS_DETAIL, statusDetail);
+                    datas.put(Status.DETAIL_ID,statusDetail.getObjectId());
                     status.setData(datas);
 //            status.setInboxType("system");
 //            AVStatus.sendPrivateStatusInBackgroud(status,"588f36f51b69e600596715c6",saveCallback);
@@ -117,22 +122,55 @@ public class AVStatusModel implements StatusSource {
     }
 
     @Override
-    public void getStatus() {
+    public Observable<List<Status>> getStatus() {
+        return Observable.create(new Observable.OnSubscribe<List<AVObject>>() {
+            @Override
+            public void call(Subscriber<? super List<AVObject>> subscriber) {
+                try {
+                    AVQuery<AVObject> querytimeline = new AVQuery<>(Status.TABLE);
+                    querytimeline.whereEqualTo(Status.INBOXTYPE,Status.INBOX_TIMELINE);
+                    AVQuery<AVObject> querysystem = new AVQuery<>(Status.TABLE);
+                    querysystem.whereEqualTo(Status.INBOXTYPE,Status.INBOX_SYSTEM);
 
+                    AVQuery<AVObject> query = AVQuery.or(Arrays.asList(querytimeline,querysystem));
+                    query.orderByDescending(Status.CREATED_AT);
+                    query.include(Status.SOURCE);
+                    subscriber.onNext(query.find());
+                    subscriber.onCompleted();
+                } catch (AVException e) {
+                    subscriber.onError(e);
+                }
+            }
+        }).flatMap(new Func1<List<AVObject>, Observable<AVObject>>() {
+            @Override
+            public Observable<AVObject> call(List<AVObject> avStatuses) {
+                return Observable.from(avStatuses);
+            }
+        }).map(new Func1<AVObject,Status>()  {
+            @Override
+            public Status call(AVObject avStatus) {
+                try {
+                    return mapperStatus(avStatus);
+                } catch (Exception e) {
+                    throw Exceptions.propagate(e);
+                }
+            }
+        }).toList().subscribeOn(Schedulers.io());
     }
 
     @Override
     public Observable<List<Status>> getInbox(String inboxType){
         if (!userModel.isLogin()) return null;
-        AVUser user = AVUser.getCurrentUser();
-        final AVStatusQuery q = AVStatus.inboxQuery(user, AVStatus.INBOX_TYPE.TIMELINE.toString());
-        q.orderByDescending(Status.CREATED_AT);
-        q.include(Status.STATUS_DETAIL);
         return Observable.create(new Observable.OnSubscribe<List<AVStatus>>() {
             @Override
             public void call(Subscriber<? super List<AVStatus>> subscriber) {
                 try {
+                    AVUser user = AVUser.getCurrentUser();
+                    AVStatusQuery q = AVStatus.inboxQuery(user, AVStatus.INBOX_TYPE.TIMELINE.toString());
+                    q.orderByDescending(Status.CREATED_AT);
+                    q.include(Status.STATUS_DETAIL);
                     subscriber.onNext(q.find());
+                    subscriber.onCompleted();
                 } catch (AVException e) {
                     subscriber.onError(e);
                 }
@@ -154,6 +192,25 @@ public class AVStatusModel implements StatusSource {
         }).toList().subscribeOn(Schedulers.io());
     }
 
+
+
+    private Status mapperStatus(AVObject avObject) throws Exception{
+        String detailId = (String) avObject.get(Status.DETAIL_ID);
+        AVObject statusdetil = AVObject.createWithoutData(Status.STATUS_DETAIL, detailId);
+        List<String> likes = (List<String>) statusdetil.get(Status.LIKES);
+        List<AVObject> comments = null;
+        List<Status.Comment> commentlist = mapperComment(comments);
+        return new AutoValue_Status(avObject.getObjectId(),
+                (String) avObject.get(Status.DETAIL_ID),
+                (String)avObject.get(Status.INBOXTYPE),
+                ((AVUser)avObject.getAVObject(Status.SOURCE)).getUsername(),
+                (String)avObject.getAVObject(Status.SOURCE).get(User.IMGURL),
+                (String)avObject.get(Status.IMG),
+                avObject.getAVObject(Status.SOURCE).getObjectId(),
+                (String)avObject.get(Status.MESSAGE),
+                avObject.getCreatedAt(),
+                new AutoValue_Status_StatusDetil(commentlist,likes));
+    }
 
     private Status mapperStatus(AVStatus avstatus) throws Exception{
 //        AVObject statusdetil = avstatus.getAVObject(Status.STATUS_DETAIL);
@@ -220,13 +277,13 @@ public class AVStatusModel implements StatusSource {
 
 
     @Override
-    public Observable<List<User>> getFollowers(String userObjId) {
-        final AVQuery<AVUser> q = AVUser.followerQuery(userObjId, AVUser.class);
-        q.include(Status.FOLLOWER);
+    public Observable<List<User>> getFollowers(final String userObjId) {
         return Observable.create(new Observable.OnSubscribe<List<AVUser>>() {
             @Override
             public void call(Subscriber<? super List<AVUser>> subscriber) {
                 try {
+                    AVQuery<AVUser> q = AVUser.followerQuery(userObjId, AVUser.class);
+                    q.include(Status.FOLLOWER);
                     subscriber.onNext(q.find());
                 } catch (AVException e) {
                     subscriber.onError(e);
@@ -247,13 +304,13 @@ public class AVStatusModel implements StatusSource {
 
 
     @Override
-    public Observable<List<User>> getFollowings(String userObjId) {
-        final AVQuery<AVUser> q = AVUser.followerQuery(userObjId, AVUser.class);
-        q.include(Status.FOLLOWEE);
+    public Observable<List<User>> getFollowings(final String userObjId) {
         return Observable.create(new Observable.OnSubscribe<List<AVUser>>() {
             @Override
             public void call(Subscriber<? super List<AVUser>> subscriber) {
                 try {
+                    AVQuery<AVUser> q = AVUser.followerQuery(userObjId, AVUser.class);
+                    q.include(Status.FOLLOWEE);
                     subscriber.onNext(q.find());
                 } catch (AVException e) {
                     subscriber.onError(e);

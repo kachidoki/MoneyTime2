@@ -1,22 +1,20 @@
 package com.kachidoki.ma.moneytime2.Main.Fragment.Community;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
+import com.kachidoki.ma.moneytime2.AddStatus.AddStatusActivity;
 import com.kachidoki.ma.moneytime2.App.Base.BaseLazyFragment;
 import com.kachidoki.ma.moneytime2.Main.Fragment.Community.Di.CommunityModule;
 import com.kachidoki.ma.moneytime2.Main.MainActivity;
@@ -29,6 +27,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by mayiwei on 2017/2/16.
@@ -41,12 +40,14 @@ public class CommunityFragment extends BaseLazyFragment implements CommunityCont
     @Inject
     CommunityAdapter adapter;
 
-    @BindView(R.id.community_toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.community_recycler)
     RecyclerView communityRecycler;
     @BindView(R.id.community_RefreshLayout)
     SwipeRefreshLayout communityRefreshLayout;
+    @BindView(R.id.commnuity_fab)
+    FloatingActionButton commnuityFab;
 
     @Override
     protected void setupComponent(Context context) {
@@ -94,4 +95,8 @@ public class CommunityFragment extends BaseLazyFragment implements CommunityCont
         communityRefreshLayout.setRefreshing(false);
     }
 
+    @OnClick(R.id.commnuity_fab)
+    public void onClick() {
+        startActivity(new Intent(getContext(), AddStatusActivity.class));
+    }
 }

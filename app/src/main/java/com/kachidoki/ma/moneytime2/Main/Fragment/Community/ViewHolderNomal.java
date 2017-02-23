@@ -34,8 +34,9 @@ public class ViewHolderNomal extends CommunityBaseViewholder {
     ImageView holderCommunityLike;
     @BindView(R.id.holder_community_comment)
     ImageView holderCommunityComment;
-    @BindView(R.id.holder_community_delete)
-    ImageView holderCommunityDelete;
+    @BindView(R.id.holder_community_wholike)
+    TextView holderCommunityWholike;
+
 
     public ViewHolderNomal(ViewGroup viewGroup) {
         super(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.viewholder_community_recycler_nomal, viewGroup, false));
@@ -55,15 +56,14 @@ public class ViewHolderNomal extends CommunityBaseViewholder {
 
     }
 
-    @OnClick({R.id.holder_community_like, R.id.holder_community_comment, R.id.holder_community_delete})
+    @OnClick({R.id.holder_community_like, R.id.holder_community_comment})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.holder_community_like:
                 break;
             case R.id.holder_community_comment:
                 break;
-            case R.id.holder_community_delete:
-                break;
+
         }
     }
 }

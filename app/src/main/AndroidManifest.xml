@@ -26,6 +26,8 @@
         </activity>
         <activity android:name=".RegLogin.Register.RegisterActivity">
         </activity>
+        <activity android:name=".AddStatus.AddStatusActivity">
+        </activity>
     </application>
 
 </manifest>

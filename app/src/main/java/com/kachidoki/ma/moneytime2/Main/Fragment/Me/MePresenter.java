@@ -68,7 +68,7 @@ public class MePresenter implements MeContract.Presenter {
 
 
     private void loadStatusNum() {
-        statusSource.getInbox(AppConstant.INBOX_TIMELINE)
+        statusSource.getInbox(Status.INBOX_TIMELINE)
                 .observeOn(AndroidSchedulers.mainThread())
                  .subscribe(new Action1<List<Status>>() {
                     @Override

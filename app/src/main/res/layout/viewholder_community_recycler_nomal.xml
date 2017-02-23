@@ -67,23 +67,26 @@
         android:layout_height="32dp"
         android:gravity="right">
         <ImageView
-            android:id="@+id/holder_community_like"
-            android:src="@drawable/icon_like_1"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            />
-        <ImageView
             android:id="@+id/holder_community_comment"
             android:src="@drawable/icon_comment_1"
             android:layout_width="32dp"
             android:layout_height="32dp"
             />
         <ImageView
-            android:id="@+id/holder_community_delete"
+            android:id="@+id/holder_community_like"
+            android:src="@drawable/icon_like_1"
             android:layout_width="32dp"
             android:layout_height="32dp"
             />
     </LinearLayout>
+    <TextView
+        android:id="@+id/holder_community_wholike"
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
     <View
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
@@ -92,6 +95,7 @@
         android:layout_height="1dp"
         android:background="@color/Gray"/>
     <View
+        android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
         android:layout_width="match_parent"
         android:layout_height="4dp"

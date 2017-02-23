@@ -15,6 +15,9 @@ import java.util.List;
 @AutoValue
 public abstract class Status implements Parcelable{
     public static final String TABLE = "_Status";
+    public static final String INBOX_TIMELINE =  "default";
+    public static final String INBOX_SYSTEM = "system";
+
 
     public static final String LIKES = "likes";
     public static final String STATUS_DETAIL = "StatusDetail";
@@ -23,6 +26,9 @@ public abstract class Status implements Parcelable{
     public static final String FOLLOWER = "follower";
     public static final String FOLLOWEE = "followee";
     public static final String INBOXTYPE = "inboxType";
+    public static final String SOURCE = "source";
+    public static final String IMG = "image";
+    public static final String MESSAGE = "message";
     public static final String COMMENT = "StatusComment";
 
     public static final int MUTUAL_FOLLOW = 0;//disable follow

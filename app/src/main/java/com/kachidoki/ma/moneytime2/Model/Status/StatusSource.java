@@ -32,7 +32,7 @@ public interface StatusSource {
 
     void sendPrivateStatus();
 
-    void getStatus();
+    Observable<List<Status>> getStatus();
 
     Observable<List<Status>> getInbox(String inboxType);
 
