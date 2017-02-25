@@ -111,4 +111,8 @@ public abstract class Task implements Parcelable{
         }
     }
 
+    public static Task createTask(String title, float startTime, float endTime, int year, int day, int month, int weekDay, int weekOfYear, int color, String description, boolean complete){
+        return new AutoValue_Task(title,startTime,endTime,year,day,month,weekDay,weekOfYear,color,description,complete);
+    }
+
 }

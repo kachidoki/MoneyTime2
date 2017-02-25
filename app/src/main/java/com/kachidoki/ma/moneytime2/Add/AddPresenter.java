@@ -1,6 +1,7 @@
 package com.kachidoki.ma.moneytime2.Add;
 
 import com.kachidoki.ma.moneytime2.Model.Task.Source.TasksDataSource;
+import com.kachidoki.ma.moneytime2.Model.Task.Task;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -32,26 +33,30 @@ public class AddPresenter implements AddContract.Presenter {
 
 
     @Override
-    public void saveTask(String title, float startTime, float endTime, int year, int day, int month, int weekDay, int weekOfYear, int color, String description, boolean complete) {
-        dataRespository.saveTask(title,startTime,endTime,year,day,month,weekDay,weekOfYear,color,description,complete);
+    public void saveTask(Task task) {
+        dataRespository.saveTask(task.title(),task.startTime(),task.endTime(),task.year(),task.day(),task.month(),task.weekDay(),task.weekOfYear(),task.color(),task.description(),task.complete());
         view.saveIsOk();
     }
 
     @Override
-    public void checkInput(String title, float startTime, float endTime,int color,String description, boolean complete) {
+    public Task checkInput(String title, float startTime, float endTime, int color, String description, boolean complete) {
         if(title.isEmpty()){
             view.showNoTitle();
+            return null;
         }else {
             if (startTime==endTime){
                 view.showTimeIsNotOk();
+                return null;
             }else {
                 if(isDouble()==true){
                     view.showTimeIsNotOk();
+                    return null;
                 }else {
                     if (color==-1){
                         view.showNoColor();
+                        return null;
                     }else {
-                        saveTask(title,startTime,endTime,Year,Day,Month,WeekDay,WeekOfYear,color,description,complete);
+                        return Task.createTask(title,startTime,endTime,Year,Day,Month,WeekDay,WeekOfYear,color,description,complete);
                     }
                 }
 

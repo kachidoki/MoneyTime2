@@ -1,6 +1,8 @@
 package com.kachidoki.ma.moneytime2.DoTask;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -10,7 +12,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.kachidoki.ma.moneytime2.App.App;
 import com.kachidoki.ma.moneytime2.App.Base.BaseActivity;
+import com.kachidoki.ma.moneytime2.DoTask.Di.DaggerDoTaskComponent;
+import com.kachidoki.ma.moneytime2.DoTask.Di.DoTaskModule;
 import com.kachidoki.ma.moneytime2.Model.Task.Task;
 import com.kachidoki.ma.moneytime2.R;
 import com.kachidoki.ma.moneytime2.Widget.CountDownView;
@@ -49,11 +54,16 @@ public class DoTaskActivity extends BaseActivity implements DoTaskContract.View,
 
     private Handler timeHandler;
     private Task task;
+    private static final String TASK = "task";
 
 
     @Override
     protected void setupActivityComponent() {
-
+        DaggerDoTaskComponent.builder()
+                .appComponent(((App) getApplication()).getAppComponent())
+                .doTaskModule(new DoTaskModule(this))
+                .build()
+                .inject(this);
     }
 
 
@@ -62,7 +72,9 @@ public class DoTaskActivity extends BaseActivity implements DoTaskContract.View,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dotask);
         ButterKnife.bind(this);
-
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        task = getIntent().getParcelableExtra(TASK);
         timeHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
@@ -70,7 +82,13 @@ public class DoTaskActivity extends BaseActivity implements DoTaskContract.View,
                 presenter.getNowTime();
             }
         };
-
+        dotaskCountdown.setCallback(new CountDownView.Callback() {
+            @Override
+            public void OnFinish() {
+                presenter.downTask(task.year()+"",task.day()+"",task.month()+"",task.startTime()+"",task.endTime()+"");
+            }
+        });
+        presenter.start();
     }
 
 
@@ -78,7 +96,6 @@ public class DoTaskActivity extends BaseActivity implements DoTaskContract.View,
     protected void onDestroy() {
         super.onDestroy();
         dotaskCountdown.cancel();
-
     }
 
     @Override
@@ -127,7 +144,12 @@ public class DoTaskActivity extends BaseActivity implements DoTaskContract.View,
                 }
                 break;
             case R.id.dotask_down:
-                if (dotaskCountdown.isFinish()) finish();
+                if (dotaskCountdown.isFinish()){
+                    finish();
+                }else {
+                    presenter.downTask(task.year()+"",task.day()+"",task.month()+"",task.startTime()+"",task.endTime()+"");
+                    finish();
+                }
                 break;
         }
     }
@@ -160,5 +182,12 @@ public class DoTaskActivity extends BaseActivity implements DoTaskContract.View,
                         finish();
                     }
                 }).show();
+    }
+
+
+    public static void gotoDoTask(Context context, Task task){
+        Intent intent = new Intent(context,DoTaskActivity.class);
+        intent.putExtra(TASK,task);
+        context.startActivity(intent);
     }
 }

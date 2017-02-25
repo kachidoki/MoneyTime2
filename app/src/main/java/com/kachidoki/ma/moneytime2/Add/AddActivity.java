@@ -16,6 +16,8 @@ import com.kachidoki.ma.moneytime2.Add.Di.AddModule;
 import com.kachidoki.ma.moneytime2.Add.Di.DaggerAddComponent;
 import com.kachidoki.ma.moneytime2.App.App;
 import com.kachidoki.ma.moneytime2.App.Base.BaseActivity;
+import com.kachidoki.ma.moneytime2.DoTask.DoTaskActivity;
+import com.kachidoki.ma.moneytime2.Model.Task.Task;
 import com.kachidoki.ma.moneytime2.R;
 import com.kachidoki.ma.moneytime2.Widget.ColorPicker;
 import com.kachidoki.ma.moneytime2.Widget.TimePicker;
@@ -88,12 +90,20 @@ public class AddActivity extends BaseActivity implements AddContract.View {
                 showPickTime();
                 break;
             case R.id.add_undo:
-                presenter.checkInput(getTitleText(),getstartTime(),getendTime(),getColor(),getDescription(),false);
+                if (presenter.checkInput(getTitleText(),getstartTime(),getendTime(),getColor(),getDescription(),false)!=null){
+                    presenter.saveTask(presenter.checkInput(getTitleText(),getstartTime(),getendTime(),getColor(),getDescription(),false));
+                }
                 break;
             case R.id.add_hasdo:
-                presenter.checkInput(getTitleText(),getstartTime(),getendTime(),getColor(),getDescription(),true);
+                if (presenter.checkInput(getTitleText(),getstartTime(),getendTime(),getColor(),getDescription(),true)!=null){
+                    presenter.saveTask(presenter.checkInput(getTitleText(),getstartTime(),getendTime(),getColor(),getDescription(),true));
+                }
                 break;
             case R.id.add_todo:
+                if (presenter.checkInput(getTitleText(),getstartTime(),getendTime(),getColor(),getDescription(),false)!=null){
+                    presenter.checkInput(getTitleText(),getstartTime(),getendTime(),getColor(),getDescription(),false);
+                    goToDo(presenter.checkInput(getTitleText(),getstartTime(),getendTime(),getColor(),getDescription(),false));
+                }
                 break;
         }
     }
@@ -144,10 +154,6 @@ public class AddActivity extends BaseActivity implements AddContract.View {
         Toast.makeText(AddActivity.this,"请添加标题",Toast.LENGTH_LONG).show();
     }
 
-    @Override
-    public void goToDo() {
-
-    }
 
     @Override
     public void saveIsOk() {
@@ -163,5 +169,10 @@ public class AddActivity extends BaseActivity implements AddContract.View {
             }
         }, presenter.getCurrentDate().get(Calendar.YEAR), presenter.getCurrentDate().get(Calendar.MONTH),presenter.getCurrentDate().get(Calendar.DAY_OF_MONTH)).show();
 
+    }
+
+    private void goToDo(Task task) {
+        presenter.saveTask(task);
+        DoTaskActivity.gotoDoTask(this,task);
     }
 }

@@ -31,7 +31,7 @@ public interface DoTaskContract {
 
         void startDoTime(float starttime,float endtime);
 
-        void downTask();
+        void downTask(String year,String day,String month,String startTime, String endTime);
 
 
     }

@@ -6,6 +6,7 @@ import com.kachidoki.ma.moneytime2.Model.Task.Source.TasksDataSource;
 import com.kachidoki.ma.moneytime2.Model.Task.Task;
 
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -13,6 +14,8 @@ import java.util.Locale;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
 
 /**
  * Created by mayiwei on 2017/2/16.
@@ -38,6 +41,12 @@ public class HostPresenter implements HostContract.Presenter {
     @Override
     public void loadTasks() {
         tasksRepository.getWeekTasks(Year+"",WeekOfYear+"")
+                .doOnNext(new Action1<List<Task>>() {
+                    @Override
+                    public void call(List<Task> tasks) {
+                        Collections.reverse(tasks);
+                    }
+                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<Task>>() {
                     @Override
@@ -61,6 +70,12 @@ public class HostPresenter implements HostContract.Presenter {
     @Override
     public void refresh() {
         tasksRepository.getWeekTasks(Year+"",WeekOfYear+"")
+                .doOnNext(new Action1<List<Task>>() {
+                    @Override
+                    public void call(List<Task> tasks) {
+                        Collections.reverse(tasks);
+                    }
+                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<Task>>() {
                     @Override

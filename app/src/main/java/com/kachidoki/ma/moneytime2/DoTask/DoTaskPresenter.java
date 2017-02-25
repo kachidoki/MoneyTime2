@@ -43,8 +43,8 @@ public class DoTaskPresenter implements DoTaskContract.Presenter {
     }
 
     @Override
-    public void downTask() {
-
+    public void downTask(String year,String day,String month,String startTime, String endTime) {
+        tasksDataSource.doneTask(year,day,month,startTime,endTime);
     }
 
     private String getWeekName(int i){

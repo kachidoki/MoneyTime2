@@ -11,6 +11,7 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.kachidoki.ma.moneytime2.Model.Task.Task;
 import com.kachidoki.ma.moneytime2.R;
 
 import java.util.ArrayList;
@@ -25,6 +26,11 @@ public class CountDownView extends PieChart {
     private CountDownTimer timer;
     private long alltime;
     private boolean isfinsh = false;
+    private Callback callback;
+
+    public interface Callback{
+        void OnFinish();
+    }
 
     public CountDownView(Context context) {
         this(context,null);
@@ -39,6 +45,9 @@ public class CountDownView extends PieChart {
         setChart();
     }
 
+    public void setCallback(Callback callback){
+        this.callback = callback;
+    }
 
     private void setChart(){
         this.setDragDecelerationFrictionCoef(0.98f);
@@ -97,8 +106,10 @@ public class CountDownView extends PieChart {
 
             @Override
             public void onFinish() {
-                Log.e("PIEVIEW", "down");
                 isfinsh = true;
+                if (callback!=null){
+                    callback.OnFinish();
+                }
             }
         };
         timer.start();

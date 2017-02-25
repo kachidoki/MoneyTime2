@@ -2,6 +2,7 @@ package com.kachidoki.ma.moneytime2.Add;
 
 import com.kachidoki.ma.moneytime2.App.Base.BasePresenter;
 import com.kachidoki.ma.moneytime2.App.Base.BaseView;
+import com.kachidoki.ma.moneytime2.Model.Task.Task;
 
 import java.util.Calendar;
 
@@ -30,16 +31,15 @@ public interface AddContract {
 
         void showNoTitle();
 
-        void goToDo();
 
         void saveIsOk();
 
     }
     interface Presenter extends BasePresenter{
 
-        void saveTask(String title, float startTime, float endTime, int year, int day, int month, int weekDay, int weekOfYear, int color, String description, boolean complete);
+        void saveTask(Task task);
 
-        void checkInput(String title, float startTime, float endTime,int color,String description, boolean complete);
+        Task checkInput(String title, float startTime, float endTime, int color, String description, boolean complete);
 
         void setDateTime(int year,int month,int day);
 

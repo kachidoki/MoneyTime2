@@ -20,13 +20,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Add.AddActivity">
+        <activity
+            android:name=".Add.AddActivity"
+            android:label="添加">
         </activity>
-        <activity android:name=".RegLogin.Login.LoginActivity">
+        <activity android:name=".RegLogin.Login.LoginActivity"
+            android:label="登录">
         </activity>
-        <activity android:name=".RegLogin.Register.RegisterActivity">
+        <activity android:name=".RegLogin.Register.RegisterActivity"
+            android:label="注册">
         </activity>
-        <activity android:name=".AddStatus.AddStatusActivity">
+        <activity android:name=".AddStatus.AddStatusActivity"
+            android:label="发布">
+        </activity>
+        <activity android:name=".DoTask.DoTaskActivity"
+            android:label="执行">
+        </activity>
+        <activity android:name=".ShowTask.ShowTaskActivity"
+            >
         </activity>
     </application>
 

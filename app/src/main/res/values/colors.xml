@@ -17,9 +17,9 @@
     <color name="GrayTight">#eaebec</color>
     <color name="papuler">#a58acc</color>
 
-    <color name="Red">#dcff4444</color>
-    <color name="Green">#dc009688</color>
-    <color name="Yellow">#dcffc107</color>
-    <color name="Orange">#dcff5722</color>
-    <color name="Blue">#dc2196f3</color>
+    <color name="Red">#d2ff4444</color>
+    <color name="Green">#d2009688</color>
+    <color name="Yellow">#d2ffc107</color>
+    <color name="Orange">#d2ff5722</color>
+    <color name="Blue">#d22196f3</color>
 </resources>

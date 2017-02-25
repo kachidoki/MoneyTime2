@@ -1,13 +1,16 @@
 package com.kachidoki.ma.moneytime2.Main.Fragment.Host;
 
+import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kachidoki.ma.moneytime2.Model.Task.Task;
 import com.kachidoki.ma.moneytime2.R;
+import com.kachidoki.ma.moneytime2.ShowTask.ShowTaskActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,14 +50,21 @@ public class ViewHolderNomal extends HostBaseViewHolder {
 
 
     @Override
-    public void bind(Task task) {
+    public void bind(final Task task) {
         holderHostStarttime.setText(TransformTime(task.startTime()));
         holderHostEndtime.setText(TransformTime(task.endTime()));
+        if(task.complete()) holderHostTitle.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         holderHostTitle.setText(task.title());
         if(task.color()==Task.RED) holderHostColor.setImageResource(R.drawable.icon_round_red);
         if(task.color()==Task.BLUE) holderHostColor.setImageResource(R.drawable.icon_round_blue);
         if(task.color()==Task.ORANGE) holderHostColor.setImageResource(R.drawable.icon_round_orange);
         if(task.color()==Task.YELLOW) holderHostColor.setImageResource(R.drawable.icon_round_yellow);
         if(task.color()==Task.GREEN) holderHostColor.setImageResource(R.drawable.icon_round_green);
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShowTaskActivity.gotoShowTask(itemView.getContext(),task);
+            }
+        });
     }
 }
