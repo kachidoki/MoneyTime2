@@ -41,6 +41,12 @@ public class TimeTransform {
     public int getYear(){
         return currentTime.get(Calendar.YEAR);
     }
+    public int getWeekDay(){
+        return currentTime.get(Calendar.DAY_OF_WEEK);
+    }
+    public int getWeekOfYear(){
+        return currentTime.get(Calendar.WEEK_OF_YEAR);
+    }
     public long getTimestamp(){
         return currentTime.getTime().getTime()/1000;
     }

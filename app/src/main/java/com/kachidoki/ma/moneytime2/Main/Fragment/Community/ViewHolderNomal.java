@@ -83,30 +83,25 @@ public class ViewHolderNomal extends CommunityBaseViewholder {
         }
     }
 
+    private void savelikes(String detilId,String userID){
+        if (userlikes) {
+            likes.remove(user.objectId());
+            statusSource.unlikeStatus(detilId, userID);
+            userlikes = false;
+            setLikesimg();
+        } else {
+            likes.add(user.objectId());
+            statusSource.likeStatus(detilId, userID);
+            userlikes = true;
+            setLikesimg();
+        }
+    }
+
     @OnClick({R.id.holder_community_like, R.id.holder_community_comment})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.holder_community_like:
-                Log.e("VH","onClick");
-                holderCommunityLike.setImageResource(R.drawable.icon_like_1);
-                StatusSource.StatusCall saveCallback = new StatusSource.StatusCall() {
-                    @Override
-                    public void fail(Exception e) {
-                        Log.e("VH","点赞出错");
-                    }
-
-                    @Override
-                    public void sucess() {
-
-                    }
-                };
-                if (userlikes) {
-                    likes.remove(user.objectId());
-                    statusSource.likeStatus(detilId, likes, saveCallback);
-                } else {
-                    likes.add(user.objectId());
-                    statusSource.likeStatus(detilId, likes, saveCallback);
-                }
+                savelikes(detilId,user.objectId());
                 break;
             case R.id.holder_community_comment:
                 break;

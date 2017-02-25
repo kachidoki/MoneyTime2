@@ -49,8 +49,9 @@ public class ChartFragment extends BaseLazyFragment implements ChartContract.Vie
     Toolbar chartToolbar;
 
     ChartComponent chartComponent;
-
+    boolean isfirst = true;
     boolean isDayFragmentShow = false;
+    private final String WHATFRAGMENTSHOW = "isDayFragmentShow";
 
     @Override
     protected void setupComponent(Context context) {
@@ -62,6 +63,8 @@ public class ChartFragment extends BaseLazyFragment implements ChartContract.Vie
     public ChartComponent getChartComponent(){
         return chartComponent;
     }
+
+
 
     @Nullable
     @Override
@@ -75,22 +78,26 @@ public class ChartFragment extends BaseLazyFragment implements ChartContract.Vie
             actionBar.setDisplayShowTitleEnabled(false);
         }
 
+        if (savedInstanceState!=null){
+            isDayFragmentShow = savedInstanceState.getBoolean(WHATFRAGMENTSHOW,false);
+        }
+        if (isfirst){
+            showFragment(true);
+        }
+        setTagColor();
+
         return view;
     }
 
-
     @Override
     public void onLazyLoad() {
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        if (dayChartFragment.isAdded()){
-            transaction.hide(weekChartFragment).show(dayChartFragment);
-            transaction.commit();
-        }else {
-            transaction.hide(weekChartFragment).add(R.id.daychart_content,dayChartFragment);
-            transaction.commit();
-        }
-        isDayFragmentShow = true;
-        setTagColor();
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(WHATFRAGMENTSHOW,isDayFragmentShow);
     }
 
     @OnClick({R.id.chart_toolbar_day, R.id.chart_toolbar_week})
@@ -98,33 +105,43 @@ public class ChartFragment extends BaseLazyFragment implements ChartContract.Vie
         switch (view.getId()) {
             case R.id.chart_toolbar_day:
                 if (!isDayFragmentShow){
-                    FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-                    if (dayChartFragment.isAdded()){
-                        transaction.hide(weekChartFragment).show(dayChartFragment);
-                        transaction.commit();
-                    }else {
-                        transaction.hide(weekChartFragment).add(R.id.daychart_content,dayChartFragment);
-                        transaction.commit();
-                    }
-                    isDayFragmentShow = true;
-                    setTagColor();
+                    showFragment(true);
                 }
                 break;
             case R.id.chart_toolbar_week:
                 if (isDayFragmentShow){
-                    FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-                    if (weekChartFragment.isAdded()){
-                        transaction.hide(dayChartFragment).show(weekChartFragment);
-                        transaction.commit();
-                    }else {
-                        transaction.hide(dayChartFragment).add(R.id.daychart_content,weekChartFragment);
-                        transaction.commit();
-                    }
-                    isDayFragmentShow = false;
-                    setTagColor();
+                    showFragment(false);
                 }
                 break;
         }
+    }
+
+
+    private void showFragment(boolean ShowDayFragment){
+        if (ShowDayFragment){
+            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+            if (dayChartFragment.isAdded()){
+                transaction.hide(weekChartFragment).show(dayChartFragment);
+                transaction.commit();
+            }else {
+                transaction.hide(weekChartFragment).add(R.id.daychart_content,dayChartFragment);
+                transaction.commit();
+            }
+            isDayFragmentShow = true;
+            setTagColor();
+        }else {
+            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+            if (weekChartFragment.isAdded()){
+                transaction.hide(dayChartFragment).show(weekChartFragment);
+                transaction.commit();
+            }else {
+                transaction.hide(dayChartFragment).add(R.id.daychart_content,weekChartFragment);
+                transaction.commit();
+            }
+            isDayFragmentShow = false;
+            setTagColor();
+        }
+        isfirst = false;
     }
 
     private void setTagColor(){

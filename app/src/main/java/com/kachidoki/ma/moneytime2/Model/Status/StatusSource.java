@@ -40,6 +40,10 @@ public interface StatusSource {
 
     void likeStatus(String detil,List<String> likes,StatusCall statusCall);
 
+    void likeStatus(String detil,String userId);
+
+    void unlikeStatus(String detil,String userId);
+
     Observable<List<Status.Comment>> getStatusComment();
 
     Observable<List<User>> getFollowers(String userObjId);

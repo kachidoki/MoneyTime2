@@ -277,6 +277,20 @@ public class AVStatusModel implements StatusSource {
     }
 
     @Override
+    public void likeStatus(String detil, String userId) {
+        AVObject detilOBJ = AVObject.createWithoutData(Status.STATUS_DETAIL,detil);
+        detilOBJ.addUnique(Status.LIKES,userId);
+        detilOBJ.saveInBackground();
+    }
+
+    @Override
+    public void unlikeStatus(String detil, String userId) {
+        AVObject detilOBJ = AVObject.createWithoutData(Status.STATUS_DETAIL,detil);
+        detilOBJ.removeAll(Status.LIKES,Arrays.asList(userId));
+        detilOBJ.saveInBackground();
+    }
+
+    @Override
     public Observable<List<Status.Comment>> getStatusComment() {
         return null;
     }
