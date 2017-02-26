@@ -7,12 +7,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.kachidoki.ma.moneytime2.App.Base.BaseLazyFragment;
 import com.kachidoki.ma.moneytime2.Main.Fragment.Chart.ChartFragment;
 import com.kachidoki.ma.moneytime2.Main.Fragment.Chart.WeekChart.Di.WeekChartModule;
 import com.kachidoki.ma.moneytime2.Model.Task.Task;
 import com.kachidoki.ma.moneytime2.R;
+import com.kachidoki.ma.moneytime2.Widget.TableDialog;
 import com.kachidoki.ma.moneytime2.Widget.WeekTable;
 
 import java.util.List;
@@ -21,6 +24,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by mayiwei on 2017/2/17.
@@ -33,6 +37,14 @@ public class WeekChartFragment extends BaseLazyFragment implements WeekChartCont
     WeekChartContract.Presenter presenter;
     @BindView(R.id.weekchart_table)
     WeekTable weekchartTable;
+    @BindView(R.id.weekchart_previous)
+    ImageView weekchartPrevious;
+    @BindView(R.id.weekchart_isnowweek)
+    TextView weekchartIsnowweek;
+    @BindView(R.id.weekchart_week)
+    TextView weekchartWeek;
+    @BindView(R.id.weekchart_next)
+    ImageView weekchartNext;
 
 
     @Nullable
@@ -40,19 +52,27 @@ public class WeekChartFragment extends BaseLazyFragment implements WeekChartCont
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_weekchart, container, false);
         ButterKnife.bind(this, view);
+        weekchartTable.setOnClickListener(new WeekTable.itemOnClickListener() {
+            @Override
+            public void OnClick(Task task) {
+                new TableDialog(getContext(), task).show();
+            }
+        });
+        Log.e("WeekChart","onCreateView");
         return view;
     }
 
 
     @Override
     protected void setupComponent(Context context) {
-        ((ChartFragment)getParentFragment()).getChartComponent()
+        ((ChartFragment) getParentFragment()).getChartComponent()
                 .plus(new WeekChartModule(this))
                 .inject(this);
     }
 
     @Override
     public void onLazyLoad() {
+        Log.e("WeekChart","onLazyLoad");
         presenter.start();
         presenter.getWeekTasks();
     }
@@ -65,5 +85,15 @@ public class WeekChartFragment extends BaseLazyFragment implements WeekChartCont
     @Override
     public void showWeekTasks(List<Task> tasks) {
         weekchartTable.setData(tasks);
+    }
+
+    @OnClick({R.id.weekchart_previous, R.id.weekchart_next})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.weekchart_previous:
+                break;
+            case R.id.weekchart_next:
+                break;
+        }
     }
 }

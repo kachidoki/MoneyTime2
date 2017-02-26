@@ -125,6 +125,7 @@ public class ChartFragment extends BaseLazyFragment implements ChartContract.Vie
                 transaction.commit();
             }else {
                 transaction.hide(weekChartFragment).add(R.id.daychart_content,dayChartFragment);
+                transaction.show(dayChartFragment);
                 transaction.commit();
             }
             isDayFragmentShow = true;
@@ -136,6 +137,7 @@ public class ChartFragment extends BaseLazyFragment implements ChartContract.Vie
                 transaction.commit();
             }else {
                 transaction.hide(dayChartFragment).add(R.id.daychart_content,weekChartFragment);
+                transaction.show(weekChartFragment);
                 transaction.commit();
             }
             isDayFragmentShow = false;

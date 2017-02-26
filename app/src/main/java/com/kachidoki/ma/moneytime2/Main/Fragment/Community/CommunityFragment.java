@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,11 +75,13 @@ public class CommunityFragment extends BaseLazyFragment implements CommunityCont
                 presenter.refresh();
             }
         });
+        Log.e("Community","onCreateView");
         return view;
     }
 
     @Override
     public void onLazyLoad() {
+        Log.e("Community","onLazyLoad");
         presenter.start();
     }
 

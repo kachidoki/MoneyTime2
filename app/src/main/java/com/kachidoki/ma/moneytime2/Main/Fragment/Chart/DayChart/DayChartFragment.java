@@ -3,6 +3,7 @@ package com.kachidoki.ma.moneytime2.Main.Fragment.Chart.DayChart;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,12 +48,14 @@ public class DayChartFragment extends BaseLazyFragment implements DayChartContra
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_daychart, container, false);
         ButterKnife.bind(this, view);
+        Log.e("DayChart","onCreateView");
         return view;
     }
 
 
     @Override
     public void onLazyLoad() {
+        Log.e("DayChart","onLazyLoad");
         presenter.start();
         presenter.getDayTasks();
     }
