@@ -47,5 +47,6 @@ public class AddStatusPresenter implements AddStatusContract.Presenter {
     @Override
     public void setBitmip(Bitmap bitmip) {
         this.bitmap = bitmip;
+        view.showBitmap(bitmip);
     }
 }

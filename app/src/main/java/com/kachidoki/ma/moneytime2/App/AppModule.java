@@ -2,6 +2,8 @@ package com.kachidoki.ma.moneytime2.App;
 
 import android.content.Context;
 
+import com.kachidoki.ma.moneytime2.Model.File.FileSource;
+import com.kachidoki.ma.moneytime2.Model.File.QiniuFileModel;
 import com.kachidoki.ma.moneytime2.Model.Status.AVStatusModel;
 import com.kachidoki.ma.moneytime2.Model.Status.StatusSource;
 import com.kachidoki.ma.moneytime2.Model.Task.LocalTasksDataSource;
@@ -39,8 +41,14 @@ public class AppModule {
 
     @Singleton
     @Provides
-    StatusSource providesStatusModel(UserSource userSource){
-        return new AVStatusModel(userSource);
+    StatusSource providesStatusModel(UserSource userSource,FileSource fileSource){
+        return new AVStatusModel(userSource,fileSource);
+    }
+
+    @Singleton
+    @Provides
+    FileSource providesFileModel(){
+        return new QiniuFileModel(AppConstant.QINIUAK,AppConstant.QINIUSK,AppConstant.QINIUbucket);
     }
 
 }

@@ -5,6 +5,7 @@ import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
 import com.google.auto.value.AutoValue;
+import com.kachidoki.ma.moneytime2.R;
 
 /**
  * Created by mayiwei on 2017/2/12.
@@ -114,5 +115,41 @@ public abstract class Task implements Parcelable{
     public static Task createTask(String title, float startTime, float endTime, int year, int day, int month, int weekDay, int weekOfYear, int color, String description, boolean complete){
         return new AutoValue_Task(title,startTime,endTime,year,day,month,weekDay,weekOfYear,color,description,complete);
     }
+
+    public static String getColorName(int i){
+        switch (i){
+            case Task.YELLOW:return "高效";
+            case Task.ORANGE:return "不专心";
+            case Task.GREEN:return "休息";
+            case Task.BLUE:return "玩耍";
+            case Task.RED:return "拖延";
+            default:return "";
+        }
+    }
+
+    public static int getColorResource(int color) {
+        switch (color){
+            case Task.YELLOW:return R.color.Yellow;
+            case Task.ORANGE:return R.color.Orange;
+            case Task.GREEN:return R.color.Green;
+            case Task.BLUE:return R.color.Blue;
+            case Task.RED:return R.color.Red;
+            default:return R.color.Black;
+        }
+    }
+
+    public static String getTimeString(float time){
+        String tansTime;
+        int a = 0;
+        if(time - (int)time==0.5){
+            a = (int)time;
+            tansTime = a+":30";
+            return tansTime;
+        }else {
+            tansTime = (int) time+":00";
+            return tansTime;
+        }
+    }
+
 
 }

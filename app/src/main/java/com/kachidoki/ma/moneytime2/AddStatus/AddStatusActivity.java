@@ -2,6 +2,7 @@ package com.kachidoki.ma.moneytime2.AddStatus;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -84,6 +85,11 @@ public class AddStatusActivity extends BaseActivity implements AddStatusContract
     @Override
     public void sendFail(Exception e) {
         Toast.makeText(AddStatusActivity.this,"发送失败",Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showBitmap(Bitmap bitmap) {
+        addstatusImg.setImageBitmap(bitmap);
     }
 
     @Override

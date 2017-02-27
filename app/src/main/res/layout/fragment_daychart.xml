@@ -4,6 +4,15 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/daychart_showdata"
+        android:background="@color/Gray"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:textStyle="bold"
+        android:textColor="@color/White"
+        android:gravity="center"
+        android:text="2017年2月26日"/>
 
     <com.kachidoki.ma.moneytime2.Widget.PieChartView
         android:id="@+id/daychart_pieview"

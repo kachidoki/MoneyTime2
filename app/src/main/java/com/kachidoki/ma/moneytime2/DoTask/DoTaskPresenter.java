@@ -1,5 +1,7 @@
 package com.kachidoki.ma.moneytime2.DoTask;
 
+import android.util.Log;
+
 import com.kachidoki.ma.moneytime2.Model.Task.Source.TasksDataSource;
 import com.kachidoki.ma.moneytime2.Utils.TimeTransform;
 
@@ -25,8 +27,8 @@ public class DoTaskPresenter implements DoTaskContract.Presenter {
     }
 
     @Override
-    public String getNowTime() {
-        return new TimeTransform().toString("HH:mm");
+    public void getNowTime() {
+         view.showNowTime(new TimeTransform().toString("HH:mm"));
     }
 
     @Override

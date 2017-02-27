@@ -1,12 +1,17 @@
 package com.kachidoki.ma.moneytime2.Add;
 
+import android.util.Log;
+
 import com.kachidoki.ma.moneytime2.Model.Task.Source.TasksDataSource;
 import com.kachidoki.ma.moneytime2.Model.Task.Task;
+import com.kachidoki.ma.moneytime2.Utils.TimeTransform;
 
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Locale;
+import java.util.List;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
 
 /**
  * Created by mayiwei on 2017/2/17.
@@ -27,7 +32,7 @@ public class AddPresenter implements AddContract.Presenter {
 
     @Override
     public void start() {
-        SetChinaTime(currentTime);
+        SetNowTime();
         view.setDateText(Year,Month,Day);
     }
 
@@ -48,12 +53,12 @@ public class AddPresenter implements AddContract.Presenter {
                 view.showTimeIsNotOk();
                 return null;
             }else {
-                if(isDouble()==true){
-                    view.showTimeIsNotOk();
+                if(color==-1){
+                    view.showNoColor();
                     return null;
                 }else {
-                    if (color==-1){
-                        view.showNoColor();
+                    if (isDouble(startTime,endTime)){
+                        view.showTimeIsNotOk();
                         return null;
                     }else {
                         return Task.createTask(title,startTime,endTime,Year,Day,Month,WeekDay,WeekOfYear,color,description,complete);
@@ -66,15 +71,13 @@ public class AddPresenter implements AddContract.Presenter {
 
     @Override
     public void setDateTime(int year, int month, int day) {
-        Calendar cal = new GregorianCalendar(Locale.CHINA);
-        Date date = new GregorianCalendar(year,month,day).getTime();
-        cal.setTime(date);
-        Year = cal.get(Calendar.YEAR);
-        Month = cal.get(Calendar.MONTH)+1;
-        Day = cal.get(Calendar.DAY_OF_MONTH);
-        WeekDay = cal.get(Calendar.DAY_OF_WEEK);
-        WeekOfYear = cal.get(Calendar.WEEK_OF_YEAR);
-        view.setDateText(year,month,day);
+        TimeTransform timeTransform = new TimeTransform(year,month,day);
+        Year = timeTransform.getYear();
+        Month = timeTransform.getMonth();
+        Day = timeTransform.getDay();
+        WeekDay = timeTransform.getWeekDay();
+        WeekOfYear = timeTransform.getWeekOfYear();
+        view.setDateText(Year,Month,Day);
     }
 
     @Override
@@ -83,19 +86,34 @@ public class AddPresenter implements AddContract.Presenter {
     }
 
 
-    private boolean isDouble(){
-        return false;
+    private boolean isDouble(final float starttime, final float endtime){
+        return dataRespository.getDayTask(Year+"",Month+"",Day+"")
+                .map(new Func1<List<Task>, Boolean>() {
+                    @Override
+                    public Boolean call(List<Task> tasks) {
+                        if (tasks!=null){
+                            for (Task task:tasks){
+                                if((starttime<task.endTime()&&starttime>=task.startTime())||
+                                        (endtime<task.endTime()&&endtime>=task.startTime())||
+                                        (starttime<=task.startTime()&&endtime>=task.endTime())){
+                                    return true;
+                                }
+                            }
+                        }
+                        return false;
+                    }
+                })
+                .toBlocking()
+                .first();
     }
 
-    private void SetChinaTime(Calendar c){
-        Calendar cal = new GregorianCalendar(Locale.CHINA);
-        Date date = new GregorianCalendar(c.get(Calendar.YEAR),c.get(Calendar.MONTH),c.get(Calendar.DAY_OF_MONTH)).getTime();
-        cal.setTime(date);
-        Year = cal.get(Calendar.YEAR);
-        Month = cal.get(Calendar.MONTH)+1;
-        Day = cal.get(Calendar.DAY_OF_MONTH);
-        WeekDay = cal.get(Calendar.DAY_OF_WEEK);
-        WeekOfYear = cal.get(Calendar.WEEK_OF_YEAR);
+    private void SetNowTime(){
+        TimeTransform nowtime = new TimeTransform();
+        Year = nowtime.getYear();
+        Month = nowtime.getMonth();
+        Day = nowtime.getDay();
+        WeekDay = nowtime.getWeekDay();
+        WeekOfYear = nowtime.getWeekOfYear();
     }
 
 }

@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/MoneyTime2.iml" filepath="$PROJECT_DIR$/MoneyTime2.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/leancloud/leancloud.iml" filepath="$PROJECT_DIR$/leancloud/leancloud.iml" />
+      <module fileurl="file://$PROJECT_DIR$/qiniu/qiniu.iml" filepath="$PROJECT_DIR$/qiniu/qiniu.iml" />
     </modules>
   </component>
 </project>

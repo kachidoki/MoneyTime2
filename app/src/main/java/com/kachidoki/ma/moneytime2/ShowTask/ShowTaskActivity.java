@@ -103,8 +103,8 @@ public class ShowTaskActivity extends BaseActivity implements ShowTaskContract.V
             showtaskTitle.setText(task.title());
             showtaskStarttime.setText(task.startTime()+"");
             showtaskEndtime.setText(task.endTime()+"");
-            showtaskToolbarLayout.setTitle(presenter.getColor(task.color()));
-            showtaskToolbarLayout.setBackgroundResource(presenter.getColorResource(task.color()));
+            showtaskToolbarLayout.setTitle(Task.getColorName(task.color()));
+            showtaskToolbarLayout.setBackgroundResource(Task.getColorResource(task.color()));
             if (task.description().isEmpty()){
                 showtaskDescription.setText("没有内容");
             }else {

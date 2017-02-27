@@ -18,9 +18,6 @@ public interface ShowTaskContract {
 
     interface Presenter extends BasePresenter{
 
-        String getColor(int color);
-
-        int getColorResource(int color);
 
         void deleteTask(String year,String day,String month,String startTime, String endTime);
 

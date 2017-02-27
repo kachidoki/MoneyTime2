@@ -25,7 +25,7 @@ public interface DoTaskContract {
 
     interface Presenter extends BasePresenter{
 
-        String getNowTime();
+        void getNowTime();
 
         void getData();
 

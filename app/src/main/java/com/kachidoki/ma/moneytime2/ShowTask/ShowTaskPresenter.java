@@ -23,29 +23,7 @@ public class ShowTaskPresenter implements ShowTaskContract.Presenter {
 
     }
 
-    @Override
-    public String getColor(int color) {
-        switch (color){
-            case Task.YELLOW:return "高效";
-            case Task.ORANGE:return "不专心";
-            case Task.GREEN:return "休息";
-            case Task.BLUE:return "玩耍";
-            case Task.RED:return "拖延";
-            default:return "";
-        }
-    }
 
-    @Override
-    public int getColorResource(int color) {
-        switch (color){
-            case Task.YELLOW:return R.color.Yellow;
-            case Task.ORANGE:return R.color.Orange;
-            case Task.GREEN:return R.color.Green;
-            case Task.BLUE:return R.color.Blue;
-            case Task.RED:return R.color.Red;
-            default:return R.color.Black;
-        }
-    }
 
     @Override
     public void deleteTask(String year,String day,String month,String startTime, String endTime) {

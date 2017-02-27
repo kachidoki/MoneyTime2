@@ -35,24 +35,12 @@ public class ViewHolderNomal extends HostBaseViewHolder {
         ButterKnife.bind(this,itemView);
     }
 
-    public String TransformTime(float time){
-        String tansTime;
-        int a = 0;
-        if(time - (int)time==0.5){
-            a = (int)time;
-            tansTime = a+":30";
-            return tansTime;
-        }else {
-            tansTime = (int) time+":00";
-            return tansTime;
-        }
-    }
 
 
     @Override
     public void bind(final Task task) {
-        holderHostStarttime.setText(TransformTime(task.startTime()));
-        holderHostEndtime.setText(TransformTime(task.endTime()));
+        holderHostStarttime.setText(Task.getTimeString(task.startTime()));
+        holderHostEndtime.setText(Task.getTimeString(task.endTime()));
         if(task.complete()) holderHostTitle.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         holderHostTitle.setText(task.title());
         if(task.color()==Task.RED) holderHostColor.setImageResource(R.drawable.icon_round_red);

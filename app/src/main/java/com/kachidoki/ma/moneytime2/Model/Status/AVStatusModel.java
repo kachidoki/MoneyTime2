@@ -13,6 +13,8 @@ import com.avos.avoscloud.AVStatus;
 import com.avos.avoscloud.AVStatusQuery;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.SaveCallback;
+import com.kachidoki.ma.moneytime2.App.AppConstant;
+import com.kachidoki.ma.moneytime2.Model.File.FileSource;
 import com.kachidoki.ma.moneytime2.Model.User.User;
 import com.kachidoki.ma.moneytime2.Model.User.UserSource;
 
@@ -39,9 +41,12 @@ public class AVStatusModel implements StatusSource {
 
     @NonNull
     private final UserSource userModel;
+    @NonNull
+    private final FileSource fileSource;
 
-    public AVStatusModel(@NonNull UserSource userSource){
+    public AVStatusModel(@NonNull UserSource userSource, @NonNull FileSource fileSource){
         this.userModel = userSource;
+        this.fileSource = fileSource;
     }
 
 
@@ -55,6 +60,32 @@ public class AVStatusModel implements StatusSource {
         return userModel.getNowUser().objectId();
     }
 
+//    @Override
+//    public void sendStatus(final String text, Bitmap bitmap, final String inboxType, final StatusCall call) {
+//        if (!userModel.isLogin()) return;
+//        if (bitmap != null) {
+//            ByteArrayOutputStream out = new ByteArrayOutputStream();
+//            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, out);
+//            byte[] bs = out.toByteArray();
+//            AVUser user = (AVUser) userModel.getNowAccount();
+//            String name = user.getUsername() + "_" + System.currentTimeMillis();
+//            final AVFile file = new AVFile(name, bs);
+//            file.saveInBackground(new SaveCallback() {
+//                @Override
+//                public void done(AVException e) {
+//                    if (e != null) {
+//                        call.fail(e);
+//                    } else {
+//                        String url = file.getUrl();
+//                        sendStatus(text, url, inboxType,call);
+//                    }
+//                }
+//            });
+//        } else {
+//            sendStatus(text, "", inboxType,call);
+//        }
+//    }
+
     @Override
     public void sendStatus(final String text, Bitmap bitmap, final String inboxType, final StatusCall call) {
         if (!userModel.isLogin()) return;
@@ -63,17 +94,17 @@ public class AVStatusModel implements StatusSource {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 80, out);
             byte[] bs = out.toByteArray();
             AVUser user = (AVUser) userModel.getNowAccount();
-            String name = user.getUsername() + "_" + System.currentTimeMillis();
-            final AVFile file = new AVFile(name, bs);
-            file.saveInBackground(new SaveCallback() {
+            final String name = user.getUsername() + "_" + System.currentTimeMillis();
+            fileSource.upload(bs, name, fileSource.getToken(), new FileSource.FileCallback() {
                 @Override
-                public void done(AVException e) {
-                    if (e != null) {
-                        call.fail(e);
-                    } else {
-                        String url = file.getUrl();
-                        sendStatus(text, url, inboxType,call);
-                    }
+                public void sucess() {
+                    String url = AppConstant.QINIUURL+name;
+                    sendStatus(text,url,inboxType,call);
+                }
+
+                @Override
+                public void fail(Exception e) {
+                    call.fail(e);
                 }
             });
         } else {

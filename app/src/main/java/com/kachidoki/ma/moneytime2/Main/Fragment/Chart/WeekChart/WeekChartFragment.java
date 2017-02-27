@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +59,6 @@ public class WeekChartFragment extends BaseLazyFragment implements WeekChartCont
                 new TableDialog(getContext(), task).show();
             }
         });
-        Log.e("WeekChart","onCreateView");
         return view;
     }
 
@@ -72,13 +72,20 @@ public class WeekChartFragment extends BaseLazyFragment implements WeekChartCont
 
     @Override
     public void onLazyLoad() {
-        Log.e("WeekChart","onLazyLoad");
         presenter.start();
         presenter.getWeekTasks();
     }
 
     @Override
     public void setWeekText(int weekOfyear) {
+        if (!presenter.isNowWeek()) {
+            weekchartIsnowweek.setVisibility(View.GONE);
+            weekchartWeek.setGravity(Gravity.CENTER);
+        }else {
+            weekchartIsnowweek.setVisibility(View.VISIBLE);
+            weekchartWeek.setGravity(Gravity.START|Gravity.CENTER_VERTICAL);
+        }
+        weekchartWeek.setText("第"+presenter.getNowWeek()+"周");
 
     }
 
@@ -91,8 +98,10 @@ public class WeekChartFragment extends BaseLazyFragment implements WeekChartCont
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.weekchart_previous:
+                presenter.previousWeek();
                 break;
             case R.id.weekchart_next:
+                presenter.nextWeek();
                 break;
         }
     }

@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -44,7 +45,7 @@ public class PieChartView extends PieChart {
         //使用百分比
         this.setUsePercentValues(true);
         //描述
-//        mChart.setDescription();
+        this.setDescription(null);
         //设置手拖动的速度
         this.setDragDecelerationFrictionCoef(0.98f);
         //设置是否是环状
@@ -57,7 +58,7 @@ public class PieChartView extends PieChart {
         this.setRotationAngle(90);
         // enable rotation of the chart by touch 设置是否可旋转
         this.setRotationEnabled(true);
-        this.setCenterText("今天的\n效率");
+        this.setCenterText("一天的\n效率");
         this.setCenterTextSize(20);
         this.setCenterTextColor(R.color.Gray);
     }
@@ -89,7 +90,7 @@ public class PieChartView extends PieChart {
         }
         for(int i=0;i<=4;i++){
             if(quarterlys[i]!=0.0) {
-                yValues.add(new PieEntry(quarterlys[i], getColorName(i)));
+                yValues.add(new PieEntry(quarterlys[i], Task.getColorName(i)));
 
             }
         }
@@ -115,16 +116,7 @@ public class PieChartView extends PieChart {
         invalidate();
     }
 
-    private String getColorName(int i){
-        switch (i){
-            case 1:return "高效";
-            case 2:return "不专心";
-            case 3:return "休息";
-            case 4:return "玩耍";
-            case 5:return "拖延";
-            default:return "";
-        }
-    }
+
 
 
 }

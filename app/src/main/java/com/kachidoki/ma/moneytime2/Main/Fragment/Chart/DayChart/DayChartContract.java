@@ -3,6 +3,7 @@ package com.kachidoki.ma.moneytime2.Main.Fragment.Chart.DayChart;
 import com.kachidoki.ma.moneytime2.App.Base.BasePresenter;
 import com.kachidoki.ma.moneytime2.App.Base.BaseView;
 import com.kachidoki.ma.moneytime2.Model.Task.Task;
+import com.kachidoki.ma.moneytime2.Utils.TimeTransform;
 
 import java.util.Calendar;
 import java.util.List;
@@ -25,7 +26,7 @@ public interface DayChartContract {
 
         void setDataTime(int year,int month,int day);
 
-        Calendar getCurrentDate();
+        TimeTransform getCurrentDate();
 
         void getDayTasks();
     }

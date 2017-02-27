@@ -17,6 +17,8 @@ public interface AddStatusContract {
         void sendScuess();
 
         void sendFail(Exception e);
+
+        void showBitmap(Bitmap bitmap);
     }
 
     interface Presenter extends BasePresenter{

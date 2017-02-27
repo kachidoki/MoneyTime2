@@ -2,6 +2,7 @@ package com.kachidoki.ma.moneytime2.Main.Fragment.Chart.WeekChart;
 
 import com.kachidoki.ma.moneytime2.Model.Task.Source.TasksDataSource;
 import com.kachidoki.ma.moneytime2.Model.Task.Task;
+import com.kachidoki.ma.moneytime2.Utils.TimeTransform;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -18,13 +19,18 @@ import rx.android.schedulers.AndroidSchedulers;
 
 public class WeekChartPresenter implements WeekChartContract.Presenter{
     private int Year=0,Month=0,Day=0,WeekOfYear=0,WeekDay=0;
-    final Calendar currentTime = Calendar.getInstance();
+    private int NowWeekofYear = 0;
     private WeekChartContract.View view;
     private TasksDataSource DataRepository;
 
     public WeekChartPresenter(WeekChartContract.View view,TasksDataSource dataSource){
         this.view = view;
         this.DataRepository = dataSource;
+    }
+
+    @Override
+    public boolean isNowWeek() {
+        return WeekOfYear==NowWeekofYear;
     }
 
     @Override
@@ -57,27 +63,30 @@ public class WeekChartPresenter implements WeekChartContract.Presenter{
     @Override
     public void nextWeek() {
         WeekOfYear++;
+        view.setWeekText(WeekOfYear);
+        getWeekTasks();
     }
 
     @Override
     public void previousWeek() {
         WeekOfYear--;
+        view.setWeekText(WeekOfYear);
+        getWeekTasks();
     }
 
     @Override
     public void start() {
-        SetChinaTime(currentTime);
+        SetNowTime();
         view.setWeekText(WeekOfYear);
     }
 
-    private void SetChinaTime(Calendar c){
-        Calendar cal = new GregorianCalendar(Locale.CHINA);
-        Date date = new GregorianCalendar(c.get(Calendar.YEAR),c.get(Calendar.MONTH),c.get(Calendar.DAY_OF_MONTH)).getTime();
-        cal.setTime(date);
-        Year = cal.get(Calendar.YEAR);
-        Month = cal.get(Calendar.MONTH)+1;
-        Day = cal.get(Calendar.DAY_OF_MONTH);
-        WeekDay = cal.get(Calendar.DAY_OF_WEEK);
-        WeekOfYear = cal.get(Calendar.WEEK_OF_YEAR);
+    private void SetNowTime(){
+        TimeTransform nowtime = new TimeTransform();
+        Year = nowtime.getYear();
+        Month = nowtime.getMonth();
+        Day = nowtime.getDay();
+        WeekDay = nowtime.getWeekDay();
+        WeekOfYear = nowtime.getWeekOfYear();
+        NowWeekofYear = nowtime.getWeekOfYear();
     }
 }

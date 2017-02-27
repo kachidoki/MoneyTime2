@@ -2,7 +2,6 @@ package com.kachidoki.ma.moneytime2.Model.Status;
 
 import android.graphics.Bitmap;
 
-import com.avos.avoscloud.AVException;
 import com.kachidoki.ma.moneytime2.Model.User.User;
 
 import java.util.List;
@@ -27,6 +26,7 @@ public interface StatusSource {
     String getNowUserID();
 
     void sendStatus(String text, Bitmap bitmap,String inboxType,StatusCall call);
+
 
     void sendStatus(String text, String url,String inboxType,StatusCall call);
 

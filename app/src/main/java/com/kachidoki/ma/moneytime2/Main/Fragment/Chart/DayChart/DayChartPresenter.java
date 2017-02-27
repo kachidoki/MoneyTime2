@@ -1,13 +1,11 @@
 package com.kachidoki.ma.moneytime2.Main.Fragment.Chart.DayChart;
 
+
 import com.kachidoki.ma.moneytime2.Model.Task.Source.TasksDataSource;
 import com.kachidoki.ma.moneytime2.Model.Task.Task;
+import com.kachidoki.ma.moneytime2.Utils.TimeTransform;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Locale;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -18,8 +16,7 @@ import rx.android.schedulers.AndroidSchedulers;
 
 public class DayChartPresenter implements DayChartContract.Presenter {
 
-    private int Year=0,Month=0,Day=0,WeekOfYear=0,WeekDay=0;
-    final Calendar currentTime = Calendar.getInstance();
+    private int Year=0,Month=0,Day=0;
     private DayChartContract.View view;
     private TasksDataSource DataRepositorys;
 
@@ -32,26 +29,23 @@ public class DayChartPresenter implements DayChartContract.Presenter {
 
     @Override
     public void start() {
-        SetChinaTime(currentTime);
+        SetChinaTime();
         view.setDateText(Year,Month,Day);
     }
 
     @Override
     public void setDataTime(int year, int month, int day) {
-        Calendar cal = new GregorianCalendar(Locale.CHINA);
-        Date date = new GregorianCalendar(year,month,day).getTime();
-        cal.setTime(date);
-        Year = cal.get(Calendar.YEAR);
-        Month = cal.get(Calendar.MONTH)+1;
-        Day = cal.get(Calendar.DAY_OF_MONTH);
-        WeekDay = cal.get(Calendar.DAY_OF_WEEK);
-        WeekOfYear = cal.get(Calendar.WEEK_OF_YEAR);
-        view.setDateText(year,month,day);
+       TimeTransform timeTransform = new TimeTransform(year,month,day);
+        Year = timeTransform.getYear();
+        Month = timeTransform.getMonth();
+        Day = timeTransform.getDay();
+        view.setDateText(Year,Month,Day);
+        getDayTasks();
     }
 
     @Override
-    public Calendar getCurrentDate() {
-        return currentTime;
+    public TimeTransform getCurrentDate() {
+        return new TimeTransform(Year,Month-1,Day);
     }
 
     @Override
@@ -78,14 +72,10 @@ public class DayChartPresenter implements DayChartContract.Presenter {
     }
 
 
-    private void SetChinaTime(Calendar c){
-        Calendar cal = new GregorianCalendar(Locale.CHINA);
-        Date date = new GregorianCalendar(c.get(Calendar.YEAR),c.get(Calendar.MONTH),c.get(Calendar.DAY_OF_MONTH)).getTime();
-        cal.setTime(date);
-        Year = cal.get(Calendar.YEAR);
-        Month = cal.get(Calendar.MONTH)+1;
-        Day = cal.get(Calendar.DAY_OF_MONTH);
-        WeekDay = cal.get(Calendar.DAY_OF_WEEK);
-        WeekOfYear = cal.get(Calendar.WEEK_OF_YEAR);
+    private void SetChinaTime(){
+        TimeTransform nowtime = new TimeTransform();
+        Year = nowtime.getYear();
+        Month = nowtime.getMonth();
+        Day = nowtime.getDay();
     }
 }

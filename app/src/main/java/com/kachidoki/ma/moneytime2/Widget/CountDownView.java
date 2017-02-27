@@ -11,8 +11,10 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.utils.Transformer;
 import com.kachidoki.ma.moneytime2.Model.Task.Task;
 import com.kachidoki.ma.moneytime2.R;
+import com.kachidoki.ma.moneytime2.Utils.TimeTransform;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,13 +52,15 @@ public class CountDownView extends PieChart {
     }
 
     private void setChart(){
+        this.setDescription(null);
         this.setDragDecelerationFrictionCoef(0.98f);
-        //设置是否是环状
+        this.setMotionEventSplittingEnabled(false);
         this.setDrawHoleEnabled(true);
         this.setTransparentCircleColor(Color.WHITE);
-        this.setTransparentCircleAlpha(110);
+        this.setUsePercentValues(false);
+//        this.setTransparentCircleAlpha(110);
         this.setHoleRadius(50f);
-        this.setTransparentCircleRadius(58f);
+//        this.setTransparentCircleRadius(58f);
         this.setDrawCenterText(true);
         this.setRotationAngle(90);
         this.setCenterText("执行任务");
@@ -65,23 +69,20 @@ public class CountDownView extends PieChart {
     }
 
 
-    private void setTime(long donwntime) {
+    private void setTime(long lefttime) {
         List<PieEntry> yValues = new ArrayList<>();
         List<Integer> colors = new ArrayList<>();
         colors.clear();
         yValues.clear();
 
 
-        long lefttime = alltime - donwntime;
+        long donwntime = alltime - lefttime;
 
         yValues.add(new PieEntry(donwntime,"已完成"));
-        yValues.add(new PieEntry(lefttime, "剩余时间"+lefttime));
-
-
+        yValues.add(new PieEntry(lefttime, "剩余时间"+getTime(lefttime)));
         PieDataSet dataSet = new PieDataSet(yValues, "");
         dataSet.setSliceSpace(3f);//设置饼图的距离
         dataSet.setSelectionShift(5f);
-
         colors.add(Color.argb(220,255, 193, 7));
         colors.add(Color.argb(220,255, 87, 34));
         dataSet.setColors(colors);
@@ -100,7 +101,6 @@ public class CountDownView extends PieChart {
         timer = new CountDownTimer(time*1000,1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                Log.e("PIEVIEW", "onTick  " + millisUntilFinished / 1000);
                 setTime(millisUntilFinished / 1000);
             }
 
@@ -131,6 +131,16 @@ public class CountDownView extends PieChart {
         if (timer!=null){
             timer.cancel();
         }
+    }
+
+    private String getTime(long time){
+        int hour = 0;
+        long secound = time;
+        while (secound>TimeTransform.HOUR){
+            secound = secound-TimeTransform.HOUR;
+            hour++;
+        }
+        return (hour>0?(hour+"时"):"")+secound/TimeTransform.SECOND+"分";
     }
 
 

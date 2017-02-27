@@ -20,6 +20,8 @@ public interface WeekChartContract {
 
     interface Presenter extends BasePresenter{
 
+        boolean isNowWeek();
+
         int getNowWeek();
 
         void getWeekTasks();
