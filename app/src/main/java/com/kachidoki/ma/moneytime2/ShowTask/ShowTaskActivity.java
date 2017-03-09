@@ -101,8 +101,8 @@ public class ShowTaskActivity extends BaseActivity implements ShowTaskContract.V
     private void showTaskDetil(Task task){
         if (task!=null){
             showtaskTitle.setText(task.title());
-            showtaskStarttime.setText(task.startTime()+"");
-            showtaskEndtime.setText(task.endTime()+"");
+            showtaskStarttime.setText(Task.getTimeString(task.startTime()));
+            showtaskEndtime.setText(Task.getTimeString(task.endTime()));
             showtaskToolbarLayout.setTitle(Task.getColorName(task.color()));
             showtaskToolbarLayout.setBackgroundResource(Task.getColorResource(task.color()));
             if (task.description().isEmpty()){
@@ -113,6 +113,9 @@ public class ShowTaskActivity extends BaseActivity implements ShowTaskContract.V
             if (task.complete()){
                 showtaskTodo.setVisibility(View.GONE);
                 showtaskDone.setVisibility(View.GONE);
+                showtaskFab.setImageDrawable(getResources().getDrawable(R.drawable.ic_done));
+            }else {
+                showtaskFab.setImageDrawable(getResources().getDrawable(R.drawable.ic_undone));
             }
         }
     }

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +15,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.kachidoki.ma.moneytime2.About.AboutActivity;
 import com.kachidoki.ma.moneytime2.App.Base.BaseLazyFragment;
 import com.kachidoki.ma.moneytime2.Main.Fragment.Me.Di.MeModule;
 import com.kachidoki.ma.moneytime2.Main.MainActivity;
@@ -56,6 +56,10 @@ public class MeFragment extends BaseLazyFragment implements MeContract.View {
     TextView meUserName;
     @BindView(R.id.me_logout)
     LinearLayout meLogout;
+    @BindView(R.id.me_setting)
+    LinearLayout meSetting;
+    @BindView(R.id.me_about)
+    LinearLayout meAbout;
 
 
     @Override
@@ -81,26 +85,33 @@ public class MeFragment extends BaseLazyFragment implements MeContract.View {
     }
 
 
-
     @Override
     public void onLazyLoad() {
         presenter.start();
     }
 
-    @OnClick({R.id.me_mystatus, R.id.me_myfollowing, R.id.me_myfollower,R.id.me_userme,R.id.me_logout})
+    @OnClick({R.id.me_mystatus, R.id.me_myfollowing, R.id.me_myfollower, R.id.me_userme, R.id.me_logout,R.id.me_setting, R.id.me_about})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.me_mystatus:
                 break;
             case R.id.me_myfollowing:
+                Toast.makeText(getContext(),"正在完善敬请期待",Toast.LENGTH_LONG).show();
                 break;
             case R.id.me_myfollower:
+                Toast.makeText(getContext(),"正在完善敬请期待",Toast.LENGTH_LONG).show();
                 break;
             case R.id.me_userme:
                 presenter.OnUserImgClick();
                 break;
             case R.id.me_logout:
                 presenter.logout();
+                break;
+            case R.id.me_setting:
+                Toast.makeText(getContext(),"正在完善敬请期待",Toast.LENGTH_LONG).show();
+                break;
+            case R.id.me_about:
+                startActivity(new Intent(getContext(), AboutActivity.class));
                 break;
         }
     }
@@ -155,8 +166,7 @@ public class MeFragment extends BaseLazyFragment implements MeContract.View {
 
     @Override
     public void showLogout() {
-        Toast.makeText(getContext(),"已退出",Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), "已退出", Toast.LENGTH_LONG).show();
         showNotLogin();
     }
-
 }

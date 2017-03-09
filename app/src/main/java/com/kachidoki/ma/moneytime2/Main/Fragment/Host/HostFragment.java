@@ -14,9 +14,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-
 import com.kachidoki.ma.moneytime2.Add.AddActivity;
 import com.kachidoki.ma.moneytime2.App.Base.BaseLazyFragment;
 import com.kachidoki.ma.moneytime2.Main.Fragment.Host.Di.HostModule;

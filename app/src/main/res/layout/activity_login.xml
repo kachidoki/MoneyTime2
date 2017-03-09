@@ -27,7 +27,7 @@
         <TextView
             android:layout_width="56dp"
             android:layout_height="match_parent"
-            android:text="手机"
+            android:text="用户名"
             android:gravity="center"/>
         <View
             android:layout_width="1.2dp"
@@ -43,7 +43,7 @@
             android:singleLine="true"
             android:textSize="14sp"
             android:gravity="center_vertical"
-            android:hint="请输入你的手机号"/>
+            android:hint="请输入用户名"/>
     </LinearLayout>
 
     <LinearLayout

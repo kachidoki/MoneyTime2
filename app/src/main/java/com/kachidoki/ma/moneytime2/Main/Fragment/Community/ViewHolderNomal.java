@@ -1,6 +1,5 @@
 package com.kachidoki.ma.moneytime2.Main.Fragment.Community;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +10,8 @@ import com.bumptech.glide.Glide;
 import com.kachidoki.ma.moneytime2.Model.Status.Status;
 import com.kachidoki.ma.moneytime2.Model.Status.StatusSource;
 import com.kachidoki.ma.moneytime2.Model.User.User;
-import com.kachidoki.ma.moneytime2.Model.User.UserSource;
 import com.kachidoki.ma.moneytime2.R;
+import com.kachidoki.ma.moneytime2.Utils.TimeTransform;
 
 import java.util.List;
 
@@ -28,7 +27,9 @@ public class ViewHolderNomal extends CommunityBaseViewholder {
     List<String> likes;
     User user;
     boolean userlikes;
-    String detilId ;
+    String detilId;
+    @BindView(R.id.holder_community_likesize)
+    TextView holderCommunityLikesize;
     private StatusSource statusSource;
     @BindView(R.id.holder_community_userImg)
     ImageView holderCommunityUserImg;
@@ -42,10 +43,6 @@ public class ViewHolderNomal extends CommunityBaseViewholder {
     ImageView holderCommunityImg;
     @BindView(R.id.holder_community_like)
     ImageView holderCommunityLike;
-    @BindView(R.id.holder_community_comment)
-    ImageView holderCommunityComment;
-    @BindView(R.id.holder_community_wholike)
-    TextView holderCommunityWholike;
 
 
     public ViewHolderNomal(ViewGroup viewGroup, StatusSource statusSource) {
@@ -57,15 +54,28 @@ public class ViewHolderNomal extends CommunityBaseViewholder {
     @Override
     public void bind(Status status) {
         detilId = status.statusDetil().detailId();
-        holderCommunityImg.setImageDrawable(itemView.getResources().getDrawable(R.drawable.icon_nolog));
-        holderCommunityTime.setText("时间");
+        holderCommunityImg.setImageDrawable(itemView.getResources().getDrawable(R.drawable.icon_usernoimg));
+        TimeTransform transform = new TimeTransform(status.createAt());
+        holderCommunityTime.setText(transform.toString(new TimeTransform.RecentDateFormat()));
         holderCommunityUserName.setText(status.Postername());
         holderCommunityText.setText(status.message());
-        if (status.imgurl()!=null){
-            Glide.with(itemView.getContext()).load(status.imgurl()).into(holderCommunityImg);
+        if (status.imgurl() != null) {
+            Glide.with(itemView.getContext()).load(status.imgurl()).centerCrop().into(holderCommunityImg);
+        }else {
+            holderCommunityImg.setVisibility(View.GONE);
         }
         likes = status.statusDetil().likes();
-        userlikes = likes.contains(user.objectId());
+        if (user!=null){
+            userlikes = likes.contains(user.objectId());
+        }else {
+            userlikes = false;
+        }
+
+        if (status.Posterimg()!=null){
+            Glide.with(itemView.getContext()).load(status.Posterimg()).centerCrop().into(holderCommunityImg);
+        }else {
+            holderCommunityUserImg.setImageDrawable(itemView.getResources().getDrawable(R.drawable.icon_usernoimg));
+        }
         setLikesimg();
     }
 
@@ -75,15 +85,20 @@ public class ViewHolderNomal extends CommunityBaseViewholder {
     }
 
 
-    private void setLikesimg(){
+    private void setLikesimg() {
         if (userlikes) {
             holderCommunityLike.setImageResource(R.drawable.icon_like_2);
         } else {
             holderCommunityLike.setImageResource(R.drawable.icon_like_1);
         }
+        if(!likes.isEmpty()){
+            holderCommunityLikesize.setText(likes.size()+"");
+        }else {
+            holderCommunityLikesize.setVisibility(View.GONE);
+        }
     }
 
-    private void savelikes(String detilId,String userID){
+    private void savelikes(String detilId, String userID) {
         if (userlikes) {
             likes.remove(user.objectId());
             statusSource.unlikeStatus(detilId, userID);
@@ -97,14 +112,13 @@ public class ViewHolderNomal extends CommunityBaseViewholder {
         }
     }
 
-    @OnClick({R.id.holder_community_like, R.id.holder_community_comment})
+    @OnClick({R.id.holder_community_like})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.holder_community_like:
-                savelikes(detilId,user.objectId());
+                savelikes(detilId, user.objectId());
                 break;
-            case R.id.holder_community_comment:
-                break;
+
 
         }
     }

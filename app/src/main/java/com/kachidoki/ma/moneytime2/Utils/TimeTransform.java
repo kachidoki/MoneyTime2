@@ -32,6 +32,11 @@ public class TimeTransform {
         currentTime=new GregorianCalendar(year,month,day);
     }
 
+    public TimeTransform(Date date){
+        currentTime = new GregorianCalendar();
+        currentTime.setTime(date);
+    }
+
     public int getDay(){
         return currentTime.get(Calendar.DATE);
     }

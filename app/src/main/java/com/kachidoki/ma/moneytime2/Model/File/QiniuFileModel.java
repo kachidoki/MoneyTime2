@@ -1,5 +1,6 @@
 package com.kachidoki.ma.moneytime2.Model.File;
 
+import com.kachidoki.ma.moneytime2.App.AppConstant;
 import com.kachidoki.ma.qiniu.TokenUtils.Auth;
 import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.UpCompletionHandler;
@@ -30,7 +31,7 @@ public class QiniuFileModel implements FileSource {
             @Override
             public void complete(String key, ResponseInfo info, JSONObject response) {
                 if (info.isOK()){
-                    fileCallback.sucess();
+                    fileCallback.sucess(AppConstant.QINIUURL+key);
                 }else {
                     fileCallback.fail(null);
                 }

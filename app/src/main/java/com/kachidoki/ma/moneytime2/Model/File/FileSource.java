@@ -7,7 +7,7 @@ package com.kachidoki.ma.moneytime2.Model.File;
 public interface FileSource {
 
     public interface FileCallback{
-        void sucess();
+        void sucess(String url);
         void fail(Exception e);
     }
 

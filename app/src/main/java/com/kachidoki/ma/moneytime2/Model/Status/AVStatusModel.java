@@ -97,8 +97,7 @@ public class AVStatusModel implements StatusSource {
             final String name = user.getUsername() + "_" + System.currentTimeMillis();
             fileSource.upload(bs, name, fileSource.getToken(), new FileSource.FileCallback() {
                 @Override
-                public void sucess() {
-                    String url = AppConstant.QINIUURL+name;
+                public void sucess(String url) {
                     sendStatus(text,url,inboxType,call);
                 }
 

@@ -61,7 +61,7 @@ public class TableDialog extends Dialog {
         tablediagleDate.setText(task.year()+"年"+task.month()+"月"+task.day()+"日");
         tablediagleStarttime.setText(task.startTime()+"");
         tablediagleEndtime.setText(task.endTime()+"");
-        tablediagleColor.setText(task.color()+"");
+        tablediagleColor.setText(Task.getColorName(task.color()));
         if (task.complete()){
             tablediagleGotodo.setVisibility(View.GONE);
         }

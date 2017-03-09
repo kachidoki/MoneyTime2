@@ -10,13 +10,12 @@
         android:layout_height="wrap_content"
         android:singleLine="true"
         android:maxLength="11"
-        android:inputType="number"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
         android:textSize="16sp"
         android:padding="16dp"
-        android:hint="请输入您的手机号"
+        android:hint="请输入您的用户名"
         android:background="@drawable/bg_round_white"/>
     <EditText
         android:id="@+id/register_pass"

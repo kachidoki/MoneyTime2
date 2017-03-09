@@ -3,6 +3,7 @@ package com.kachidoki.ma.moneytime2.AddStatus;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -20,6 +21,7 @@ import com.kachidoki.ma.moneytime2.App.Base.BaseActivity;
 import com.kachidoki.ma.moneytime2.R;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.inject.Inject;
 
@@ -57,6 +59,8 @@ public class AddStatusActivity extends BaseActivity implements AddStatusContract
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addstatus);
         ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
     }
 
     @OnClick({R.id.addstatus_img, R.id.addstatus_send})
@@ -67,6 +71,7 @@ public class AddStatusActivity extends BaseActivity implements AddStatusContract
                 break;
             case R.id.addstatus_send:
                 presenter.send(addstatusMessage.getText().toString());
+                finish();
                 break;
         }
     }
@@ -79,7 +84,6 @@ public class AddStatusActivity extends BaseActivity implements AddStatusContract
     @Override
     public void sendScuess() {
         Toast.makeText(AddStatusActivity.this,"发送成功",Toast.LENGTH_LONG).show();
-        finish();
     }
 
     @Override
@@ -99,7 +103,16 @@ public class AddStatusActivity extends BaseActivity implements AddStatusContract
             if (requestCode == IMAGE_PICK_REQUEST) {
                 Uri uri = data.getData();
                 try {
-                    presenter.setBitmip(MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri));
+//                    presenter.setBitmip(MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri));
+                    InputStream input = this.getContentResolver().openInputStream(uri);
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inSampleSize = 2;
+                    Bitmap bitmap = BitmapFactory.decodeStream(input,null,options);
+                    if (bitmap.getByteCount()/1024<150){
+                        options.inSampleSize = 1;
+                        bitmap = BitmapFactory.decodeStream(input,null,options);
+                    }
+                    presenter.setBitmip(bitmap);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

@@ -1,6 +1,8 @@
 package com.kachidoki.ma.moneytime2.Main.Fragment.Host;
 
 
+import android.util.Log;
+
 import com.kachidoki.ma.moneytime2.Model.Task.FakeData;
 import com.kachidoki.ma.moneytime2.Model.Task.Source.TasksDataSource;
 import com.kachidoki.ma.moneytime2.Model.Task.Task;
@@ -45,6 +47,13 @@ public class HostPresenter implements HostContract.Presenter {
                     @Override
                     public void call(List<Task> tasks) {
                         Collections.reverse(tasks);
+                        for (int i=1;i<tasks.size();i++){
+                            if (tasks.get(i).day()!=tasks.get(i-1).day()||tasks.get(i).month()!=tasks.get(i-1).month()){
+                                tasks.add(i-1,Task.createTask("",0,0,tasks.get(i).year(),tasks.get(i).day(),tasks.get(i).month(),
+                                        tasks.get(i).weekDay(),tasks.get(i).weekOfYear(),Task.BLACK,"",false));
+                                i++;
+                            }
+                        }
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
@@ -74,6 +83,13 @@ public class HostPresenter implements HostContract.Presenter {
                     @Override
                     public void call(List<Task> tasks) {
                         Collections.reverse(tasks);
+                        for (int i=1;i<tasks.size();i++){
+                            if (tasks.get(i).day()!=tasks.get(i-1).day()||tasks.get(i).month()!=tasks.get(i-1).month()){
+                                tasks.add(i-1,Task.createTask("",0,0,tasks.get(i).year(),tasks.get(i).day(),tasks.get(i).month(),
+                                        tasks.get(i).weekDay(),tasks.get(i).weekOfYear(),Task.BLACK,"",false));
+                                i++;
+                            }
+                        }
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
