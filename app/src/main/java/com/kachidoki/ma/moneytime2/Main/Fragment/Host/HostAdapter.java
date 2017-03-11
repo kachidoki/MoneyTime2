@@ -2,7 +2,6 @@ package com.kachidoki.ma.moneytime2.Main.Fragment.Host;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.ViewGroup;
 
 import com.kachidoki.ma.moneytime2.Model.Task.Task;
