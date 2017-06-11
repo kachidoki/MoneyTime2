@@ -2,6 +2,7 @@ package com.kachidoki.ma.moneytime2.DoTask;
 
 import android.util.Log;
 
+import com.kachidoki.ma.moneytime2.App.Base.RBasePresenter;
 import com.kachidoki.ma.moneytime2.Model.Task.Source.TasksDataSource;
 import com.kachidoki.ma.moneytime2.Utils.TimeTransform;
 
@@ -9,7 +10,7 @@ import com.kachidoki.ma.moneytime2.Utils.TimeTransform;
  * Created by mayiwei on 2017/2/25.
  */
 
-public class DoTaskPresenter implements DoTaskContract.Presenter {
+public class DoTaskPresenter extends RBasePresenter implements DoTaskContract.Presenter {
 
     private DoTaskContract.View view;
     private TasksDataSource tasksDataSource;

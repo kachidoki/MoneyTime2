@@ -1,5 +1,6 @@
 package com.kachidoki.ma.moneytime2.Main.Fragment.Chart.WeekChart;
 
+import com.kachidoki.ma.moneytime2.App.Base.RBasePresenter;
 import com.kachidoki.ma.moneytime2.Model.Task.Source.TasksDataSource;
 import com.kachidoki.ma.moneytime2.Model.Task.Task;
 import com.kachidoki.ma.moneytime2.Utils.TimeTransform;
@@ -17,11 +18,27 @@ import rx.android.schedulers.AndroidSchedulers;
  * Created by mayiwei on 2017/2/20.
  */
 
-public class WeekChartPresenter implements WeekChartContract.Presenter{
+public class WeekChartPresenter extends RBasePresenter implements WeekChartContract.Presenter{
     private int Year=0,Month=0,Day=0,WeekOfYear=0,WeekDay=0;
     private int NowWeekofYear = 0;
     private WeekChartContract.View view;
     private TasksDataSource DataRepository;
+    private Subscriber showTasks = new Subscriber<List<Task>>() {
+        @Override
+        public void onCompleted() {
+
+        }
+
+        @Override
+        public void onError(Throwable e) {
+
+        }
+
+        @Override
+        public void onNext(List<Task> tasks) {
+            view.showWeekTasks(tasks);
+        }
+    };
 
     public WeekChartPresenter(WeekChartContract.View view,TasksDataSource dataSource){
         this.view = view;
@@ -40,24 +57,9 @@ public class WeekChartPresenter implements WeekChartContract.Presenter{
 
     @Override
     public void getWeekTasks() {
-        DataRepository.getWeekTasks(Year+"",WeekOfYear+"")
+        addSubScription(DataRepository.getWeekTasks(Year+"",WeekOfYear+"")
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<Task>>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(List<Task> tasks) {
-                        view.showWeekTasks(tasks);
-                    }
-                });
+                .subscribe(showTasks));
     }
 
     @Override

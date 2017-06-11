@@ -62,6 +62,11 @@ public class WeekChartFragment extends BaseLazyFragment implements WeekChartCont
         return view;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.unSubScribe();
+    }
 
     @Override
     protected void setupComponent(Context context) {

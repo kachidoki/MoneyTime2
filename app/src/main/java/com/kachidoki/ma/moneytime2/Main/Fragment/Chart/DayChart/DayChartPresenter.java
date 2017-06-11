@@ -1,6 +1,7 @@
 package com.kachidoki.ma.moneytime2.Main.Fragment.Chart.DayChart;
 
 
+import com.kachidoki.ma.moneytime2.App.Base.RBasePresenter;
 import com.kachidoki.ma.moneytime2.Model.Task.Source.TasksDataSource;
 import com.kachidoki.ma.moneytime2.Model.Task.Task;
 import com.kachidoki.ma.moneytime2.Utils.TimeTransform;
@@ -14,12 +15,28 @@ import rx.android.schedulers.AndroidSchedulers;
  * Created by mayiwei on 2017/2/17.
  */
 
-public class DayChartPresenter implements DayChartContract.Presenter {
+public class DayChartPresenter extends RBasePresenter implements DayChartContract.Presenter {
 
     private int Year=0,Month=0,Day=0;
     private DayChartContract.View view;
     private TasksDataSource DataRepositorys;
 
+    private Subscriber showTasks = new Subscriber<List<Task>>() {
+        @Override
+        public void onCompleted() {
+
+        }
+
+        @Override
+        public void onError(Throwable e) {
+
+        }
+
+        @Override
+        public void onNext(List<Task> tasks) {
+            view.showDayTasks(tasks);
+        }
+    };
 
     public DayChartPresenter(DayChartContract.View view, TasksDataSource dataSource){
         this.view = view;
@@ -50,25 +67,10 @@ public class DayChartPresenter implements DayChartContract.Presenter {
 
     @Override
     public void getDayTasks() {
-        DataRepositorys.getDayTask(Year+"",Month+"",Day+"")
+        addSubScription(
+                DataRepositorys.getDayTask(Year+"",Month+"",Day+"")
                 .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<Task>>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(List<Task> tasks) {
-                        view.showDayTasks(tasks);
-                    }
-                });
-
+                .subscribe(showTasks));
     }
 
 

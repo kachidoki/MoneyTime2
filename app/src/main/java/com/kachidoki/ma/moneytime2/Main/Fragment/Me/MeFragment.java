@@ -69,10 +69,6 @@ public class MeFragment extends BaseLazyFragment implements MeContract.View {
                 .inject(this);
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Nullable
     @Override
@@ -84,6 +80,11 @@ public class MeFragment extends BaseLazyFragment implements MeContract.View {
         return view;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.unSubScribe();
+    }
 
     @Override
     public void onLazyLoad() {

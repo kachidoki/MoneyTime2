@@ -3,6 +3,7 @@ package com.kachidoki.ma.moneytime2.Main.Fragment.Host;
 
 import android.util.Log;
 
+import com.kachidoki.ma.moneytime2.App.Base.RBasePresenter;
 import com.kachidoki.ma.moneytime2.Model.Task.FakeData;
 import com.kachidoki.ma.moneytime2.Model.Task.Source.TasksDataSource;
 import com.kachidoki.ma.moneytime2.Model.Task.Task;
@@ -17,18 +18,35 @@ import java.util.Locale;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.functions.Func1;
 
 /**
  * Created by mayiwei on 2017/2/16.
  */
 
-public class HostPresenter implements HostContract.Presenter {
+public class HostPresenter extends RBasePresenter implements HostContract.Presenter {
 
     private int Year=0,Month=0,Day=0,WeekOfYear=0,WeekDay=0;
     final Calendar currentTime = Calendar.getInstance();
     private HostContract.View view;
     private TasksDataSource tasksRepository;
+
+    private Subscriber showTasks = new Subscriber<List<Task>>() {
+        @Override
+        public void onCompleted() {
+
+        }
+
+        @Override
+        public void onError(Throwable e) {
+
+        }
+
+        @Override
+        public void onNext(List<Task> tasks) {
+            view.setTask(tasks);
+            view.showTask();
+        }
+    };
 
     public HostPresenter(HostContract.View view, TasksDataSource tasksDataSource){
         this.view = view;
@@ -42,7 +60,8 @@ public class HostPresenter implements HostContract.Presenter {
 
     @Override
     public void loadTasks() {
-        tasksRepository.getWeekTasks(Year+"",WeekOfYear+"")
+        addSubScription(
+                tasksRepository.getWeekTasks(Year+"",WeekOfYear+"")
                 .doOnNext(new Action1<List<Task>>() {
                     @Override
                     public void call(List<Task> tasks) {
@@ -57,28 +76,13 @@ public class HostPresenter implements HostContract.Presenter {
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<Task>>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(List<Task> tasks) {
-                        view.setTask(tasks);
-                        view.showTask();
-                    }
-                });
+                .subscribe(showTasks));
     }
 
     @Override
     public void refresh() {
-        tasksRepository.getWeekTasks(Year+"",WeekOfYear+"")
+        addSubScription(
+                tasksRepository.getWeekTasks(Year+"",WeekOfYear+"")
                 .doOnNext(new Action1<List<Task>>() {
                     @Override
                     public void call(List<Task> tasks) {
@@ -93,23 +97,7 @@ public class HostPresenter implements HostContract.Presenter {
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<Task>>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(List<Task> tasks) {
-                        view.setTask(tasks);
-                        view.showTask();
-                    }
-                });
+                .subscribe(showTasks));
     }
 
     private void SetChinaTime(Calendar c){

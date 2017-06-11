@@ -1,8 +1,7 @@
 package com.kachidoki.ma.moneytime2.Main.Fragment.Me;
 
-import android.util.Log;
 
-import com.kachidoki.ma.moneytime2.App.AppConstant;
+import com.kachidoki.ma.moneytime2.App.Base.RBasePresenter;
 import com.kachidoki.ma.moneytime2.Model.Status.Status;
 import com.kachidoki.ma.moneytime2.Model.Status.StatusSource;
 import com.kachidoki.ma.moneytime2.Model.User.User;
@@ -17,7 +16,7 @@ import rx.functions.Action1;
  * Created by mayiwei on 2017/2/16.
  */
 
-public class MePresenter implements MeContract.Presenter {
+public class MePresenter extends RBasePresenter implements MeContract.Presenter {
     private MeContract.View view;
     private StatusSource statusSource;
     private UserSource userSource;
@@ -38,8 +37,6 @@ public class MePresenter implements MeContract.Presenter {
             view.showNotLogin();
         }
     }
-
-
 
 
     @Override
@@ -65,19 +62,19 @@ public class MePresenter implements MeContract.Presenter {
 
 
     private void loadStatusNum() {
-        statusSource.getInbox(Status.INBOX_TIMELINE)
+        addSubScription(statusSource.getInbox(Status.INBOX_TIMELINE)
                 .observeOn(AndroidSchedulers.mainThread())
-                 .subscribe(new Action1<List<Status>>() {
+                .subscribe(new Action1<List<Status>>() {
                     @Override
                     public void call(List<Status> statuses) {
                         if (statuses!=null) view.setStatusNum(statuses.size());
                         loadFollowerNum();
                     }
-                });
+                }));
     }
 
     private void loadFollowerNum() {
-        statusSource.getFollowers(statusSource.getNowUserID())
+        addSubScription(statusSource.getFollowers(statusSource.getNowUserID())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<List<User>>() {
                     @Override
@@ -85,18 +82,18 @@ public class MePresenter implements MeContract.Presenter {
                         if (users!=null) view.setFollowerNum(users.size());
                         loadFollowingNum();
                     }
-                });
+                }));
     }
 
     private void loadFollowingNum() {
-        statusSource.getFollowings(statusSource.getNowUserID())
+        addSubScription(statusSource.getFollowings(statusSource.getNowUserID())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<List<User>>() {
                     @Override
                     public void call(List<User> users) {
                         if (users!=null) view.setFollowerNum(users.size());
                     }
-                });
+                }));
     }
 
 }

@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 
 import com.kachidoki.ma.moneytime2.Add.AddContract;
 import com.kachidoki.ma.moneytime2.App.AppConstant;
+import com.kachidoki.ma.moneytime2.App.Base.RBasePresenter;
 import com.kachidoki.ma.moneytime2.Model.Status.Status;
 import com.kachidoki.ma.moneytime2.Model.Status.StatusSource;
 
@@ -11,7 +12,7 @@ import com.kachidoki.ma.moneytime2.Model.Status.StatusSource;
  * Created by mayiwei on 2017/2/22.
  */
 
-public class AddStatusPresenter implements AddStatusContract.Presenter {
+public class AddStatusPresenter extends RBasePresenter implements AddStatusContract.Presenter {
 
     private AddStatusContract.View view;
     private StatusSource statusSource;

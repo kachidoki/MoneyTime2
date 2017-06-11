@@ -2,6 +2,7 @@ package com.kachidoki.ma.moneytime2.Add;
 
 import android.util.Log;
 
+import com.kachidoki.ma.moneytime2.App.Base.RBasePresenter;
 import com.kachidoki.ma.moneytime2.Model.Task.Source.TasksDataSource;
 import com.kachidoki.ma.moneytime2.Model.Task.Task;
 import com.kachidoki.ma.moneytime2.Utils.TimeTransform;
@@ -17,7 +18,7 @@ import rx.functions.Func1;
  * Created by mayiwei on 2017/2/17.
  */
 
-public class AddPresenter implements AddContract.Presenter {
+public class AddPresenter extends RBasePresenter implements AddContract.Presenter {
 
 
     private int Year=0,Month=0,Day=0,WeekOfYear=0,WeekDay=0;

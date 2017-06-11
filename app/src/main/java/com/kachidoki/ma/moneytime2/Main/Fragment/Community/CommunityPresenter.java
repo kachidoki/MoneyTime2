@@ -2,6 +2,7 @@ package com.kachidoki.ma.moneytime2.Main.Fragment.Community;
 
 import android.util.Log;
 
+import com.kachidoki.ma.moneytime2.App.Base.RBasePresenter;
 import com.kachidoki.ma.moneytime2.Model.Status.Status;
 import com.kachidoki.ma.moneytime2.Model.Status.StatusSource;
 import com.kachidoki.ma.moneytime2.Model.User.UserSource;
@@ -15,7 +16,7 @@ import rx.android.schedulers.AndroidSchedulers;
  * Created by mayiwei on 2017/2/16.
  */
 
-public class CommunityPresenter implements CommunityContract.Presenter {
+public class CommunityPresenter extends RBasePresenter implements CommunityContract.Presenter {
     private CommunityContract.View view;
     private StatusSource statusSource;
     private UserSource userSource;
@@ -41,7 +42,8 @@ public class CommunityPresenter implements CommunityContract.Presenter {
     @Override
     public void loadStatus() {
         view.showLoading();
-        statusSource.getStatus()
+        addSubScription(
+                statusSource.getStatus()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<Status>>() {
                     @Override
@@ -58,7 +60,7 @@ public class CommunityPresenter implements CommunityContract.Presenter {
                     public void onNext(List<Status> statuses) {
                         view.setTask(statuses);
                     }
-                });
+                }));
     }
 
     @Override

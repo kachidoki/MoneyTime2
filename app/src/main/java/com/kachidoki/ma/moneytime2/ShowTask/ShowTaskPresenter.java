@@ -1,5 +1,6 @@
 package com.kachidoki.ma.moneytime2.ShowTask;
 
+import com.kachidoki.ma.moneytime2.App.Base.RBasePresenter;
 import com.kachidoki.ma.moneytime2.Model.Task.Source.TasksDataSource;
 import com.kachidoki.ma.moneytime2.Model.Task.Task;
 import com.kachidoki.ma.moneytime2.R;
@@ -8,7 +9,7 @@ import com.kachidoki.ma.moneytime2.R;
  * Created by mayiwei on 2017/2/25.
  */
 
-public class ShowTaskPresenter implements ShowTaskContract.Presenter {
+public class ShowTaskPresenter extends RBasePresenter implements ShowTaskContract.Presenter {
     private ShowTaskContract.View view;
     private TasksDataSource tasksDataSource;
 

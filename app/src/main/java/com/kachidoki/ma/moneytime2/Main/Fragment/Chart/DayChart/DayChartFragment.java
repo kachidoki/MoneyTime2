@@ -57,6 +57,11 @@ public class DayChartFragment extends BaseLazyFragment implements DayChartContra
         return view;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.unSubScribe();
+    }
 
     @Override
     public void onLazyLoad() {

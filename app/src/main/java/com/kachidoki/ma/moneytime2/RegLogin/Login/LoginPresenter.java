@@ -1,13 +1,14 @@
 package com.kachidoki.ma.moneytime2.RegLogin.Login;
 
 import com.kachidoki.ma.moneytime2.App.AppConstant;
+import com.kachidoki.ma.moneytime2.App.Base.RBasePresenter;
 import com.kachidoki.ma.moneytime2.Model.User.UserSource;
 
 /**
  * Created by mayiwei on 2017/2/21.
  */
 
-public class LoginPresenter implements LoginContract.Presenter{
+public class LoginPresenter extends RBasePresenter implements LoginContract.Presenter{
 
     private LoginContract.View view;
     private UserSource userSource;

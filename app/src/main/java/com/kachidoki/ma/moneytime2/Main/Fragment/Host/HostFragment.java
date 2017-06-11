@@ -79,6 +79,11 @@ public class HostFragment extends BaseLazyFragment implements HostContract.View 
         return view;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.unSubScribe();
+    }
 
     @Override
     public void onLazyLoad() {

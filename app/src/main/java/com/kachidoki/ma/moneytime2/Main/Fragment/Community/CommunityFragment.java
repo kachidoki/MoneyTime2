@@ -80,6 +80,12 @@ public class CommunityFragment extends BaseLazyFragment implements CommunityCont
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.unSubScribe();
+    }
+
+    @Override
     public void onLazyLoad() {
         Log.e("Community","onLazyLoad");
         presenter.start();
