@@ -1,6 +1,7 @@
 package com.kachidoki.ma.moneytime2.AddStatus;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,14 +15,22 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.kachidoki.ma.kimgpicker.KIMGPicker;
+import com.kachidoki.ma.kimgpicker.KPCompressor;
+import com.kachidoki.ma.kimgpicker.KPConfig;
+import com.kachidoki.ma.kimgpicker.Loader.ImageLoader;
 import com.kachidoki.ma.moneytime2.AddStatus.Di.AddStatusModule;
 import com.kachidoki.ma.moneytime2.AddStatus.Di.DaggerAddStatusComponent;
 import com.kachidoki.ma.moneytime2.App.App;
 import com.kachidoki.ma.moneytime2.App.Base.BaseActivity;
 import com.kachidoki.ma.moneytime2.R;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -34,7 +43,7 @@ import butterknife.OnClick;
  */
 
 public class AddStatusActivity extends BaseActivity implements AddStatusContract.View {
-    private static final int IMAGE_PICK_REQUEST = 0;
+    private static final int IMAGE_PICK_REQUEST = 10001;
     @Inject
     AddStatusContract.Presenter presenter;
     @BindView(R.id.toolbar)
@@ -45,6 +54,9 @@ public class AddStatusActivity extends BaseActivity implements AddStatusContract
     ImageView addstatusImg;
     @BindView(R.id.addstatus_send)
     Button addstatusSend;
+
+    private KPConfig config;
+    private KPCompressor compressor;
 
     @Override
     protected void setupActivityComponent() {
@@ -60,14 +72,20 @@ public class AddStatusActivity extends BaseActivity implements AddStatusContract
         setContentView(R.layout.activity_addstatus);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        config = new KPConfig.Builder(this)
+                            .multiSelect(false)
+                            .needCrop(true)
+                            .cropSize(1,1,800,800)
+                            .needCompressor(true)
+                            .build();
+        compressor = new KPCompressor(this).MaxSize(800,800).Quality(90);
     }
 
     @OnClick({R.id.addstatus_img, R.id.addstatus_send})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.addstatus_img:
-                pickImage(this,IMAGE_PICK_REQUEST);
+                KIMGPicker.GoPick(this,config,new GlideImageLoader(),compressor,IMAGE_PICK_REQUEST);
                 break;
             case R.id.addstatus_send:
                 presenter.send(addstatusMessage.getText().toString());
@@ -99,30 +117,21 @@ public class AddStatusActivity extends BaseActivity implements AddStatusContract
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == IMAGE_PICK_REQUEST) {
-                Uri uri = data.getData();
-                try {
-//                    presenter.setBitmip(MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri));
-                    InputStream input = this.getContentResolver().openInputStream(uri);
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-                    options.inSampleSize = 2;
-                    Bitmap bitmap = BitmapFactory.decodeStream(input,null,options);
-                    if (bitmap.getByteCount()/1024<150){
-                        options.inSampleSize = 1;
-                        bitmap = BitmapFactory.decodeStream(input,null,options);
-                    }
-                    presenter.setBitmip(bitmap);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+        if (requestCode==IMAGE_PICK_REQUEST&&resultCode==Activity.RESULT_OK) {
+            ArrayList<String> res = data.getStringArrayListExtra(KIMGPicker.RESULT);
+            presenter.setBitmip(BitmapFactory.decodeFile(res.get(0)));
         }
     }
 
-    private static void pickImage(Activity activity, int requestCode) {
-        Intent intent = new Intent(Intent.ACTION_PICK, null);
-        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-        activity.startActivityForResult(intent, requestCode);
+    final class GlideImageLoader implements ImageLoader {
+
+        @Override
+        public void displayImage(Context context, String path, ImageView imageView, int width, int height) {
+            Glide.with(context)
+                    .load(Uri.fromFile(new File(path)))
+                    .error(R.mipmap.default_image)
+                    .placeholder(R.color.gray)
+                    .into(imageView);
+        }
     }
 }

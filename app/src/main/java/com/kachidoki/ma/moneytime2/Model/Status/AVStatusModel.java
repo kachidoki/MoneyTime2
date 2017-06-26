@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.avos.avoscloud.AVACL;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVFile;
 import com.avos.avoscloud.AVObject;
@@ -49,49 +50,12 @@ public class AVStatusModel implements StatusSource {
         this.fileSource = fileSource;
     }
 
-
-    @Override
-    public boolean checkIsLogin() {
-        return userModel.isLogin();
-    }
-
-    @Override
-    public String getNowUserID() {
-        return userModel.getNowUser().objectId();
-    }
-
-//    @Override
-//    public void sendStatus(final String text, Bitmap bitmap, final String inboxType, final StatusCall call) {
-//        if (!userModel.isLogin()) return;
-//        if (bitmap != null) {
-//            ByteArrayOutputStream out = new ByteArrayOutputStream();
-//            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, out);
-//            byte[] bs = out.toByteArray();
-//            AVUser user = (AVUser) userModel.getNowAccount();
-//            String name = user.getUsername() + "_" + System.currentTimeMillis();
-//            final AVFile file = new AVFile(name, bs);
-//            file.saveInBackground(new SaveCallback() {
-//                @Override
-//                public void done(AVException e) {
-//                    if (e != null) {
-//                        call.fail(e);
-//                    } else {
-//                        String url = file.getUrl();
-//                        sendStatus(text, url, inboxType,call);
-//                    }
-//                }
-//            });
-//        } else {
-//            sendStatus(text, "", inboxType,call);
-//        }
-//    }
-
     @Override
     public void sendStatus(final String text, Bitmap bitmap, final String inboxType, final StatusCall call) {
         if (!userModel.isLogin()) return;
         if (bitmap != null) {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, out);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
             byte[] bs = out.toByteArray();
             AVUser user = (AVUser) userModel.getNowAccount();
             final String name = user.getUsername() + "_" + System.currentTimeMillis();
@@ -111,8 +75,7 @@ public class AVStatusModel implements StatusSource {
         }
     }
 
-    @Override
-    public void sendStatus(final String text, final String url, final String inboxType, final StatusCall call) {
+    private void sendStatus(final String text, final String url, final String inboxType, final StatusCall call) {
         if (!userModel.isLogin()) return;
         final AVObject statusDetail = new AVObject(Status.STATUS_DETAIL);
         statusDetail.saveInBackground(new SaveCallback() {
@@ -127,11 +90,70 @@ public class AVStatusModel implements StatusSource {
                     Map<String, Object> datas = new HashMap<>();
                     datas.put(Status.STATUS_DETAIL,statusDetail);
                     status.setData(datas);
-                    //选择inbox
-//            status.setInboxType("system");
-//            AVStatus.sendPrivateStatusInBackgroud(status,"588f36f51b69e600596715c6",saveCallback);
-//            status.sendInBackground(saveCallback);
-                    AVStatus.sendStatusToFollowersInBackgroud(status, new SaveCallback() {
+                    status.setInboxType(inboxType);
+                    status.sendInBackground(new SaveCallback() {
+                        @Override
+                        public void done(AVException e) {
+                            if (e != null) {
+                                call.fail(e);
+                            } else {
+                                call.sucess();
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    @Override
+    public void sendPublicStatus(final String text, Bitmap bitmap, final String inboxType, final StatusCall call) {
+        if (!userModel.isLogin()) return;
+        if (bitmap != null) {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            byte[] bs = out.toByteArray();
+            User user = userModel.getNowUser();
+            final String name = user.username() + "_" + System.currentTimeMillis();
+            fileSource.upload(bs, name, fileSource.getToken(), new FileSource.FileCallback() {
+                @Override
+                public void sucess(String url) {
+                    sendPublicStatus(text,url,inboxType,call);
+                }
+
+                @Override
+                public void fail(Exception e) {
+                    call.fail(e);
+                }
+            });
+        } else {
+            sendPublicStatus(text, "", inboxType,call);
+        }
+    }
+
+    private void sendPublicStatus(final String text, final String url, final String inboxType, final StatusCall call){
+        if (!userModel.isLogin()) return;
+        final AVObject statusDetail = new AVObject(Status.STATUS_DETAIL);
+        statusDetail.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(AVException e) {
+                if (e != null) {
+                    call.fail(e);
+                } else {
+                    AVObject status = new AVObject(Status.TABLE_PUBLIC);
+                    status.put(Status.MESSAGE,text);
+                    status.put(Status.IMG,url);
+                    status.put(Status.STATUS_DETAIL,statusDetail);
+                    status.put(Status.INBOXTYPE,inboxType);
+                    status.put(Status.SOURCE,userModel.getNowAccount());
+
+                    AVACL acl = new AVACL();
+                    acl.setPublicWriteAccess(false);
+                    acl.setPublicReadAccess(true);
+                    acl.setWriteAccess((AVUser) userModel.getNowAccount(),true);
+                    status.setACL(acl);
+
+                    status.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(AVException e) {
                             if (e != null) {
@@ -152,17 +174,14 @@ public class AVStatusModel implements StatusSource {
     }
 
     @Override
-    public Observable<List<Status>> getStatus() {
+    public Observable<List<Status>> getPublicStatus(final String inboxType) {
         return Observable.create(new Observable.OnSubscribe<List<AVObject>>() {
             @Override
             public void call(Subscriber<? super List<AVObject>> subscriber) {
                 try {
-                    AVQuery<AVObject> querytimeline = new AVQuery<>(Status.TABLE);
-                    querytimeline.whereEqualTo(Status.INBOXTYPE,Status.INBOX_TIMELINE);
-                    AVQuery<AVObject> querysystem = new AVQuery<>(Status.TABLE);
-                    querysystem.whereEqualTo(Status.INBOXTYPE,Status.INBOX_SYSTEM);
+                    AVQuery<AVObject> query = new AVQuery<>(Status.TABLE_PUBLIC);
+                    query.whereEqualTo(Status.INBOXTYPE,inboxType);
 
-                    AVQuery<AVObject> query = AVQuery.or(Arrays.asList(querytimeline,querysystem));
                     query.orderByDescending(Status.CREATED_AT);
                     query.include(Status.SOURCE);
                     query.include(Status.STATUS_DETAIL);
@@ -190,14 +209,14 @@ public class AVStatusModel implements StatusSource {
     }
 
     @Override
-    public Observable<List<Status>> getInbox(String inboxType){
+    public Observable<List<Status>> getInbox(final String inboxType){
         if (!userModel.isLogin()) return null;
         return Observable.create(new Observable.OnSubscribe<List<AVStatus>>() {
             @Override
             public void call(Subscriber<? super List<AVStatus>> subscriber) {
                 try {
                     AVUser user = AVUser.getCurrentUser();
-                    AVStatusQuery q = AVStatus.inboxQuery(user, AVStatus.INBOX_TYPE.TIMELINE.toString());
+                    AVStatusQuery q = AVStatus.inboxQuery(user,inboxType);
                     q.orderByDescending(Status.CREATED_AT);
                     q.include(Status.STATUS_DETAIL);
                     subscriber.onNext(q.find());
@@ -246,13 +265,7 @@ public class AVStatusModel implements StatusSource {
 
     private Status mapperStatus(AVStatus avstatus) throws Exception{
         AVObject statusdetil = avstatus.getAVObject(Status.STATUS_DETAIL);
-//当还是detilID时
-//        Map<String, Object> data = avstatus.getData();
-//        String detailId = (String) data.get(Status.DETAIL_ID);
-//        AVObject statusdetil = AVObject.createWithoutData(Status.STATUS_DETAIL, detailId);
-
         List<String> likes = (List<String>) statusdetil.get(Status.LIKES);
-
 //        AVRelation<AVObject> relation = statusdetil.getRelation(Status.COMMENT);
 //        AVQuery<AVObject> query = relation.getQuery();
 //        List<AVObject> comments = query.find();
@@ -286,8 +299,8 @@ public class AVStatusModel implements StatusSource {
 
     @Override
     public void deleteStatus(Status s) {
-        AVObject avstatus = AVObject.createWithoutData(Status.TABLE,s.objectId());
-        avstatus.deleteInBackground();
+//        AVObject avstatus = AVObject.createWithoutData(Status.TABLE,s.objectId());
+//        avstatus.deleteInBackground();
     }
 
     @Override

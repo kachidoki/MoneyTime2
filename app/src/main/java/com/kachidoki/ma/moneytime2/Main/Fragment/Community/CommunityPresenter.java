@@ -1,5 +1,6 @@
 package com.kachidoki.ma.moneytime2.Main.Fragment.Community;
 
+import android.os.Handler;
 import android.util.Log;
 
 import com.kachidoki.ma.moneytime2.App.Base.RBasePresenter;
@@ -7,6 +8,7 @@ import com.kachidoki.ma.moneytime2.Model.Status.Status;
 import com.kachidoki.ma.moneytime2.Model.Status.StatusSource;
 import com.kachidoki.ma.moneytime2.Model.User.UserSource;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import rx.Subscriber;
@@ -43,24 +45,27 @@ public class CommunityPresenter extends RBasePresenter implements CommunityContr
     public void loadStatus() {
         view.showLoading();
         addSubScription(
-                statusSource.getStatus()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<Status>>() {
-                    @Override
-                    public void onCompleted() {
+                statusSource.getPublicStatus(Status.INBOX_SYSTEM)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Subscriber<List<Status>>() {
+                            @Override
+                            public void onCompleted() {
+                                Log.e("Presenter","onCompleted");
+                            }
 
-                    }
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.e("Presenter","onError "+e.getMessage());
+                                view.setTask(new ArrayList<Status>());
+                            }
 
-                    @Override
-                    public void onError(Throwable e) {
+                            @Override
+                            public void onNext(List<Status> statuses) {
+                                Log.e("Presenter","onNext");
+                                view.setTask(statuses);
+                            }
+                        }));
 
-                    }
-
-                    @Override
-                    public void onNext(List<Status> statuses) {
-                        view.setTask(statuses);
-                    }
-                }));
     }
 
     @Override

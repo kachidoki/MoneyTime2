@@ -14,25 +14,20 @@ import rx.Observable;
 
 public interface StatusSource {
 
-    public interface StatusCall{
+    interface StatusCall{
 
         void fail(Exception e);
 
         void sucess();
     }
 
-    boolean checkIsLogin();
-
-    String getNowUserID();
-
     void sendStatus(String text, Bitmap bitmap,String inboxType,StatusCall call);
 
-
-    void sendStatus(String text, String url,String inboxType,StatusCall call);
+    void sendPublicStatus(String text, Bitmap bitmap,String inboxType,StatusCall call);
 
     void sendPrivateStatus();
 
-    Observable<List<Status>> getStatus();
+    Observable<List<Status>> getPublicStatus(String inboxType);
 
     Observable<List<Status>> getInbox(String inboxType);
 

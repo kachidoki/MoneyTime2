@@ -14,8 +14,9 @@ import java.util.List;
 
 @AutoValue
 public abstract class Status implements Parcelable{
-    public static final String TABLE = "_Status";
-    public static final String INBOX_TIMELINE =  "default";
+    public static final String TABLE_PUBLIC = "PublicStatus";
+    public static final String TABLE_INBOX = "_Status";
+    public static final String INBOX_TIMELINE = "default";
     public static final String INBOX_SYSTEM = "system";
 
 

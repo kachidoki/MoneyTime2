@@ -6,7 +6,7 @@ package com.kachidoki.ma.moneytime2.Model.User;
  */
 
 public interface UserSource {
-    public interface UserCall{
+    interface UserCall{
         void sucess();
         void fail(Exception e);
     }

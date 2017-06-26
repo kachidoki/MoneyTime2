@@ -1,6 +1,8 @@
 package com.kachidoki.ma.moneytime2.Main.Fragment.Me;
 
 
+import android.util.Log;
+
 import com.kachidoki.ma.moneytime2.App.Base.RBasePresenter;
 import com.kachidoki.ma.moneytime2.Model.Status.Status;
 import com.kachidoki.ma.moneytime2.Model.Status.StatusSource;
@@ -9,6 +11,7 @@ import com.kachidoki.ma.moneytime2.Model.User.UserSource;
 
 import java.util.List;
 
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 
@@ -30,7 +33,7 @@ public class MePresenter extends RBasePresenter implements MeContract.Presenter 
 
     @Override
     public void start() {
-        if (statusSource.checkIsLogin()){
+        if (userSource.isLogin()){
             loadLoginUser();
             view.showLogin();
         }else {
@@ -47,7 +50,7 @@ public class MePresenter extends RBasePresenter implements MeContract.Presenter 
 
     @Override
     public void OnUserImgClick() {
-        if (statusSource.checkIsLogin()){
+        if (userSource.isLogin()){
             view.goToConfig();
         }else {
             view.gotoLogin();
@@ -64,9 +67,19 @@ public class MePresenter extends RBasePresenter implements MeContract.Presenter 
     private void loadStatusNum() {
         addSubScription(statusSource.getInbox(Status.INBOX_TIMELINE)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<Status>>() {
+                .subscribe(new Subscriber<List<Status>>() {
                     @Override
-                    public void call(List<Status> statuses) {
+                    public void onCompleted() {
+                        Log.e("Me","onCompleted");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e("Me","onError "+e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(List<Status> statuses) {
                         if (statuses!=null) view.setStatusNum(statuses.size());
                         loadFollowerNum();
                     }
@@ -74,7 +87,7 @@ public class MePresenter extends RBasePresenter implements MeContract.Presenter 
     }
 
     private void loadFollowerNum() {
-        addSubScription(statusSource.getFollowers(statusSource.getNowUserID())
+        addSubScription(statusSource.getFollowers(userSource.getNowUser().objectId())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<List<User>>() {
                     @Override
@@ -86,7 +99,7 @@ public class MePresenter extends RBasePresenter implements MeContract.Presenter 
     }
 
     private void loadFollowingNum() {
-        addSubScription(statusSource.getFollowings(statusSource.getNowUserID())
+        addSubScription(statusSource.getFollowings(userSource.getNowUser().objectId())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<List<User>>() {
                     @Override

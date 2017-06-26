@@ -2,8 +2,6 @@ package com.kachidoki.ma.moneytime2.AddStatus;
 
 import android.graphics.Bitmap;
 
-import com.kachidoki.ma.moneytime2.Add.AddContract;
-import com.kachidoki.ma.moneytime2.App.AppConstant;
 import com.kachidoki.ma.moneytime2.App.Base.RBasePresenter;
 import com.kachidoki.ma.moneytime2.Model.Status.Status;
 import com.kachidoki.ma.moneytime2.Model.Status.StatusSource;
@@ -31,7 +29,7 @@ public class AddStatusPresenter extends RBasePresenter implements AddStatusContr
     @Override
     public void send(String message) {
         if (!message.isEmpty()||bitmap!=null){
-            statusSource.sendStatus(message, bitmap, Status.INBOX_TIMELINE, new StatusSource.StatusCall() {
+            statusSource.sendPublicStatus(message, bitmap, Status.INBOX_SYSTEM, new StatusSource.StatusCall() {
                 @Override
                 public void fail(Exception e) {
                     view.sendFail(e);
@@ -42,6 +40,8 @@ public class AddStatusPresenter extends RBasePresenter implements AddStatusContr
                     view.sendScuess();
                 }
             });
+        }else {
+            view.showMessageNo();
         }
     }
 

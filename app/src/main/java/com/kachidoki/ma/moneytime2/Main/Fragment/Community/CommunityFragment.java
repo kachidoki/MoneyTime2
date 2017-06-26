@@ -65,7 +65,7 @@ public class CommunityFragment extends BaseLazyFragment implements CommunityCont
         View view = inflater.inflate(R.layout.fragment_community, container, false);
         ButterKnife.bind(this, view);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("社区");
+        toolbar.setTitle("社区");
         communityRecycler.setAdapter(adapter);
         communityRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         communityRefreshLayout.setColorSchemeColors(Color.BLUE, Color.GREEN, Color.RED, Color.YELLOW);
@@ -75,7 +75,6 @@ public class CommunityFragment extends BaseLazyFragment implements CommunityCont
                 presenter.refresh();
             }
         });
-        Log.e("Community","onCreateView");
         return view;
     }
 

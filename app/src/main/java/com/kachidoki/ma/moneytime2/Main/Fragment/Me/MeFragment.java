@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,7 +77,7 @@ public class MeFragment extends BaseLazyFragment implements MeContract.View {
         View view = inflater.inflate(R.layout.fragment_me, container, false);
         ButterKnife.bind(this, view);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("个人");
+        toolbar.setTitle("个人");
         return view;
     }
 
@@ -127,7 +128,6 @@ public class MeFragment extends BaseLazyFragment implements MeContract.View {
 
     @Override
     public void showLogin() {
-        presenter.loadLoginUser();
         meLogout.setVisibility(View.VISIBLE);
         meUserstatus.setVisibility(View.VISIBLE);
     }
